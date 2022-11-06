@@ -1,0 +1,59 @@
+/* SIDEBAR */
+body {
+    background-color: #fff;
+}
+
+#close-sidebar {
+    color: #fff;
+    position: absolute;
+    right: 30px;
+    top: 22px;
+}
+
+#close-sidebar:hover {
+    cursor: pointer;
+}
+
+#show-sidebar.toggle {
+    display: inline;
+    color: #000;
+    font-size: 30px;
+}
+
+.show-list {
+    font-size: 40px !important;
+}
+
+#show-sidebar {
+    display: none;
+}
+
+.sidebar.hide {
+    display: none;
+}
+
+.welcome {
+    text-align: center;
+}
+
+#data-analysis-container {
+    display: none;
+}
+
+#googlechartContainer {
+    max-width: 50%;
+}
+
+.container-dashboard {
+    display: grid;
+    grid-template-columns: 100%;
+}
+
+.view-appointments {
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+}
+
+.view-appointments a:hover {
+    text-decoration: underline;
+}

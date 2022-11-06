@@ -1,0 +1,100 @@
+html {
+    height: 100%;
+}
+
+.wrapper {
+    height: 100%;
+}
+
+/* SIDEBAR */
+#close-sidebar {
+    color: #fff;
+    position: absolute;
+    right: 30px;
+    top: 22px;
+}
+
+#close-sidebar:hover {
+    cursor: pointer;
+}
+
+#show-sidebar.toggle {
+    display: inline;
+    color: #000;
+    font-size: 30px;
+}
+
+.show-list {
+    font-size: 40px !important;
+}
+
+#show-sidebar {
+    display: none;
+}
+
+.sidebar.hide {
+    display: none;
+}
+
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    height: 50vh;
+}
+
+.container img {
+    display: inline-block;
+    border-radius: 100%;
+    width: 18.75rem;
+    height: 18.75rem;
+    margin-top: 2rem;
+}
+
+.container h1 {
+    margin-top: 2rem;
+}
+
+.profile-text {
+    display: grid;
+    align-items: center;
+    grid-template-rows: 1fr 1fr;
+}
+
+.email_title {
+    align-self: start;
+    font-size: 2rem;
+}
+
+.email_title a:hover {
+    text-decoration: underline;
+}
+
+.account-header {
+    margin-left: 1.5rem;
+}
+
+.container input {
+    width: 40%;
+    border: none;
+    padding: 1rem;
+}
+
+.container label,
+.container input {
+    font-size: 1.3rem;
+}
+
+#profile-form {
+    margin-bottom: 0;
+}
+
+#submit {
+    background-color: #9C27B0;
+    color: #fff;
+    border-radius: 50px;
+    width: 20%;
+    margin-left: 75px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
