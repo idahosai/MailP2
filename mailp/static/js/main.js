@@ -8738,8 +8738,3 @@ Docs & License: https://fullcalendar.io/
     Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
-
-
-
-
-console.log("1111", 1111)
