@@ -26,9 +26,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-9k^fw-v1sce4fk+=*e6gbd5hbi*z6ul_u&dr!dbh02cb1k)ri4"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+#when degub is true, the static pictures & css started showing again rather than not showing
+#i found this sollution to the problem here https://stackoverflow.com/questions/60620434/django-cannot-find-static-files
+#'DEBUG =True ' is only for when your debuging on your own not when you want to deploy
+#so make the necessary correction to 'DEBUG - False' when you decide to deploy
+#DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['mailp-env.eba-pevqvyfk.us-east-2.elasticbeanstalk.com','localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['mailp-env.eba-pevqvyfk.us-east-2.elasticbeanstalk.com', 'best-mailp-env.eba-pevqvyfk.us-east-2.elasticbeanstalk.com', 'mailp2-env.eba-pevqvyfk.us-east-2.elasticbeanstalk.com','localhost', '127.0.0.1']
 
 
 # Application definition
@@ -92,6 +98,8 @@ DATABASES = {
         "NAME": 'mailpdatabase',
         'USER': 'postgres',
         'PASSWORD': 'mailp2020!',
+        'HOST':'mailpdatabasei.cbla1ovjyisy.us-east-2.rds.amazonaws.com',
+        'PORT': '5432'
     }
 }
 
