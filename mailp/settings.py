@@ -34,7 +34,7 @@ SECRET_KEY = "django-insecure-9k^fw-v1sce4fk+=*e6gbd5hbi*z6ul_u&dr!dbh02cb1k)ri4
 #DEBUG = True
 DEBUG = False
 
-ALLOWED_HOSTS = ['mailp-env.eba-pevqvyfk.us-east-2.elasticbeanstalk.com', 'best-mailp-env.eba-pevqvyfk.us-east-2.elasticbeanstalk.com', 'mailp2-env.eba-pevqvyfk.us-east-2.elasticbeanstalk.com','localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['env-django-mail-pinyataB.eba-2uz6wi3g.us-east-2.elasticbeanstalk.com','mailp-env.eba-pevqvyfk.us-east-2.elasticbeanstalk.com', 'best-mailp-env.eba-pevqvyfk.us-east-2.elasticbeanstalk.com', 'mailp2-env.eba-pevqvyfk.us-east-2.elasticbeanstalk.com','localhost', '127.0.0.1']
 
 
 # Application definition
