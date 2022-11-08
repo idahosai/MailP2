@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 def index(request):
+    return render(request, 'pages/home.html')
+    """
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -31,4 +33,4 @@ def index(request):
     else:
         #return render(request, 'pages/home.html')
         return render(request, 'pages/home.html')
-   
+    """
