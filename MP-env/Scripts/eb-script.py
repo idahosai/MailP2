@@ -1,10 +1,10 @@
 #!c:\users\nidah\onedrive\desktop\mailpinyata\mp-env\scripts\python.exe
-# EASY-INSTALL-ENTRY-SCRIPT: 'awsebcli==3.18.1','console_scripts','eb'
+# EASY-INSTALL-ENTRY-SCRIPT: 'awsebcli==3.20.3','console_scripts','eb'
 import re
 import sys
 
 # for compatibility with easy_install; see #2198
-__requires__ = 'awsebcli==3.18.1'
+__requires__ = 'awsebcli==3.20.3'
 
 try:
     from importlib.metadata import distribution
@@ -30,4 +30,4 @@ globals().setdefault('load_entry_point', importlib_load_entry_point)
 
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
-    sys.exit(load_entry_point('awsebcli==3.18.1', 'console_scripts', 'eb')())
+    sys.exit(load_entry_point('awsebcli==3.20.3', 'console_scripts', 'eb')())
