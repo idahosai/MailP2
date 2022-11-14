@@ -34,7 +34,7 @@ SECRET_KEY = "django-insecure-9k^fw-v1sce4fk+=*e6gbd5hbi*z6ul_u&dr!dbh02cb1k)ri4
 #DEBUG = True
 DEBUG = False
 
-ALLOWED_HOSTS = ['mailpinyatacompleateA.us-east-2.elasticbeanstalk.com','localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['drummer.eba-svhu2dip.us-east-2.elasticbeanstalk.com', 'greengo.eba-svhu2dip.us-east-2.elasticbeanstalk.com', 'mailpinyatacompleateA.us-east-2.elasticbeanstalk.com','localhost', '127.0.0.1']
 
 
 # Application definition
