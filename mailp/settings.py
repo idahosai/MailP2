@@ -23,8 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-9k^fw-v1sce4fk+=*e6gbd5hbi*z6ul_u&dr!dbh02cb1k)ri4"
+# SECRET_KEY = "django-insecure-9k^fw-v1sce4fk+=*e6gbd5hbi*z6ul_u&dr!dbh02cb1k)ri4"
 
+SECRET_KEY ="AKIASBEZPPNHH5M5UVU6"
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
 #when degub is true, the static pictures & css started showing again rather than not showing
