@@ -35,7 +35,7 @@ SECRET_KEY ="AKIASBEZPPNHH5M5UVU6"
 #DEBUG = True
 DEBUG = False
 
-ALLOWED_HOSTS = ['*', 'apppnext7.eba-pvkfvfk3.us-east-2.elasticbeanstalk.com', 'apppnext1.eba-i6i9zwka.us-east-2.elasticbeanstalk.com','apppnext.eba-hvynunh4.us-east-2.elasticbeanstalk.com', 'final-dev.us-east-2.elasticbeanstalk.com', 'best-mailp-env.eba-yztmnmma.us-east-2.elasticbeanstalk.com', 'best-mailp-env2.eba-yztmnmma.us-east-2.elasticbeanstalk.com','localhost', '127.0.0.1', '5432']
+ALLOWED_HOSTS = ['apppnext31.eba-wtbrqej3.us-east-2.elasticbeanstalk.com', '*', 'apppnext7.eba-pvkfvfk3.us-east-2.elasticbeanstalk.com', 'apppnext1.eba-i6i9zwka.us-east-2.elasticbeanstalk.com','apppnext.eba-hvynunh4.us-east-2.elasticbeanstalk.com', 'final-dev.us-east-2.elasticbeanstalk.com', 'best-mailp-env.eba-yztmnmma.us-east-2.elasticbeanstalk.com', 'best-mailp-env2.eba-yztmnmma.us-east-2.elasticbeanstalk.com','localhost', '127.0.0.1', '5432']
 
 
 # Application definition
