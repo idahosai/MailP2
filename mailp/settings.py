@@ -16,7 +16,9 @@ from django.contrib.messages import constants as messages
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+
+#BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +27,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = "django-insecure-9k^fw-v1sce4fk+=*e6gbd5hbi*z6ul_u&dr!dbh02cb1k)ri4"
 
-SECRET_KEY ="AKIASBEZPPNHH5M5UVU6"
+SECRET_KEY ="AKIASBEZPPNHE5PBHQUJ"
+#SECRET_KEY = "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"
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
 #when degub is true, the static pictures & css started showing again rather than not showing
@@ -35,7 +38,7 @@ SECRET_KEY ="AKIASBEZPPNHH5M5UVU6"
 #DEBUG = True
 DEBUG = False
 
-ALLOWED_HOSTS = ['jumboenv.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com','MailPinyata3-dev.us-east-2.elasticbeanstalk.com','*','localhost', '127.0.0.1', '5432']
+ALLOWED_HOSTS = ['jumboenv.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com', 'jumboenv2.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com','MailPinyata3-dev.us-east-2.elasticbeanstalk.com','*','localhost', '127.0.0.1', '5432']
 
 
 # Application definition
@@ -47,7 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-   
+    "pages",
     
     #'schedule',
     #'djangobower',
@@ -135,18 +138,22 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATIC_URL = "static/"
 #ok this finally works now that i moved the static files inside the mailp folder instead of putting it outside that
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'mailp/static'),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
