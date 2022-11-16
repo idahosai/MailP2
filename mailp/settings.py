@@ -35,10 +35,10 @@ SECRET_KEY ="AKIASBEZPPNHE5PBHQUJ"
 #i found this sollution to the problem here https://stackoverflow.com/questions/60620434/django-cannot-find-static-files
 #'DEBUG =True ' is only for when your debuging on your own not when you want to deploy
 #so make the necessary correction to 'DEBUG - False' when you decide to deploy
-#DEBUG = True
-DEBUG = False
+DEBUG = True
+#DEBUG = False
 
-ALLOWED_HOSTS = ['jumboenv.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com', 'jumboenv2.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com','MailPinyata3-dev.us-east-2.elasticbeanstalk.com','*','localhost', '127.0.0.1', '5432']
+ALLOWED_HOSTS = ['tiardenv.eba-ncmc4uxa.us-east-2.elasticbeanstalk.com','jumboenv.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com', 'jumboenv2.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com','MailPinyata3-dev.us-east-2.elasticbeanstalk.com','*','localhost', '127.0.0.1', '5432']
 
 
 # Application definition

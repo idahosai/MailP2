@@ -1,0 +1,87 @@
+#close-sidebar {
+    color: #fff;
+    position: absolute;
+    right: 30px;
+    top: 22px;
+}
+
+#close-sidebar:hover {
+    cursor: pointer;
+}
+
+#show-sidebar.toggle {
+    display: inline;
+    color: #000;
+    font-size: 30px;
+}
+
+.show-list {
+    font-size: 40px !important;
+}
+
+#show-sidebar {
+    display: none;
+}
+
+.sidebar.hide {
+    display: none;
+}
+
+.flex-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.search_categories,
+.chart-type {
+    font-size: 13px;
+    padding: 10px 8px 10px 14px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    margin-top: 2rem;
+    margin-left: 2rem;
+}
+
+.search_categories .select,
+.chart-type .select {
+    background: url('arrow.png') no-repeat;
+    background-position: 80% center;
+    width: 100%;
+}
+
+.search_categories .select select,
+.chart-type .select select {
+    background: transparent;
+    line-height: 1;
+    border: 0;
+    padding: 0;
+    border-radius: 0;
+    position: relative;
+    z-index: 10;
+    font-size: 1em;
+}
+
+.search_categories,
+.chart-type {
+    width: 20%;
+}
+
+.select-cats,
+.select-chart {
+    width: 100%;
+}
+
+.chart-type {
+    margin-right: 2rem;
+}
+
+.update-btn {
+    display: block;
+    position: absolute;
+    right: 2rem;
+    margin-top: 1rem;
+}

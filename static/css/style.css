@@ -1,0 +1,105 @@
+* {
+    height: 100%;
+}
+
+.container-fluid {
+    padding: 0;
+}
+
+.blue,
+.white {
+    display: inline-block;
+}
+
+.blue {
+    width: 40%;
+    background-color: #003056;
+}
+
+.white {
+    width: 60%;
+    float: right;
+    position: relative;
+}
+
+.content h2 {
+    color: #808080;
+    text-align: center;
+    max-height: 50px;
+    margin-top: 20px;
+}
+
+.content {
+    position: absolute;
+    padding-top: 10%;
+    max-height: 100%;
+    width: 80%;
+    text-align: center;
+}
+
+.login-form {
+    display: inline-block;
+    max-height: 5%;
+}
+
+.inputs-login {
+    width: 80%;
+    margin-top: 5%;
+    padding: 4%;
+    border: 2px solid #003056;
+    border-radius: 10px;
+}
+
+.check {
+    text-align: left;
+    position: relative;
+    left: 40px;
+}
+
+input[type="checkbox"] {
+    display: inline-block;
+    position: relative;
+    top: 15px;
+    height: 40px;
+}
+
+label {
+    color: #7e8485
+}
+
+.buttons {
+    position: relative;
+    display: block;
+    margin-top: 40px;
+    left: -60px;
+}
+
+.btn-login {
+    margin-right: 30px;
+    background-color: #003056;
+    height: auto;
+    border: 1px solid #003056;
+}
+
+.btn:hover {
+    color: black;
+    background-color: white;
+}
+
+img {
+    display: inline-block;
+    height: 200px;
+    width: 200px;
+    margin: 0 auto;
+}
+
+.modal {
+    height: auto;
+}
+
+.signup-btn {
+    background-color: #003056;
+}
+
+
+
