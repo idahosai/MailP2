@@ -35,7 +35,7 @@ SECRET_KEY ="AKIASBEZPPNHH5M5UVU6"
 #DEBUG = True
 DEBUG = False
 
-ALLOWED_HOSTS = ['MailPinyata3-dev.us-east-2.elasticbeanstalk.com','*','localhost', '127.0.0.1', '5432']
+ALLOWED_HOSTS = ['jumboenv.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com','MailPinyata3-dev.us-east-2.elasticbeanstalk.com','*','localhost', '127.0.0.1', '5432']
 
 
 # Application definition
