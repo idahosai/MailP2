@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = "django-insecure-9k^fw-v1sce4fk+=*e6gbd5hbi*z6ul_u&dr!dbh02cb1k)ri4"
 
-SECRET_KEY ="AKIASBEZPPNHE5PBHQUJ"
+#SECRET_KEY =""
 #SECRET_KEY = "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"
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "pages",
-    
+    #"pages.apps.PagesConfig",
     #'schedule',
     #'djangobower',
     #'rest_framework',
@@ -146,13 +146,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+STATIC_URL = "static/"
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATIC_URL = "static/"
+
 #ok this finally works now that i moved the static files inside the mailp folder instead of putting it outside that
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'mailp/static'),
 ]
+
+#i need to add these static finders so it works 100% of the time
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
