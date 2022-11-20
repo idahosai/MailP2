@@ -25,10 +25,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = "django-insecure-9k^fw-v1sce4fk+=*e6gbd5hbi*z6ul_u&dr!dbh02cb1k)ri4"
+SECRET_KEY = "django-insecure-9k^fw-v1sce4fk+=*e6gbd5hbi*z6ul_u&dr!dbh02cb1k)ri4"
 
 #SECRET_KEY =""
-#SECRET_KEY = "8qElO2idBp0KwPzgFIYW7wKw6mIXJ+hGffFC7PTd"
+#SECRET_KEY = ""
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
 #when degub is true, the static pictures & css started showing again rather than not showing
@@ -40,8 +40,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['tiardenv.eba-ncmc4uxa.us-east-2.elasticbeanstalk.com','jumboenv.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com', 'jumboenv2.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com','MailPinyata3-dev.us-east-2.elasticbeanstalk.com','*','localhost', '127.0.0.1', '5432']
 
-
+# i just added the below code
 # Application definition
+BOWER_COMPONENTS_ROOT = '/PROJECT_ROOT/components/'
+BOWER_INSTALLED_APPS = (
+    'jquery',
+    'jquery-ui',
+    'bootstrap'
+)
+
+# i just added the above code
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -82,7 +90,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                                'django.template.context_processors.request'
+                "django.template.context_processors.request"
             ],
         },
     },
@@ -94,7 +102,8 @@ WSGI_APPLICATION = "mailp.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-
+#if you change the database name django will create a new database
+#for you
 
 DATABASES = {
     "default": {
@@ -146,18 +155,26 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "static/"
+
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
+STATIC_URL = "/static/"
 
 #ok this finally works now that i moved the static files inside the mailp folder instead of putting it outside that
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'mailp/static'),
 ]
 
-#i need to add these static finders so it works 100% of the time
 
+
+
+
+#i need to add these static finders so it works 100% of the time & so the static LOADS ACTUALLY
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'djangobower.finders.BowerFinder',
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
