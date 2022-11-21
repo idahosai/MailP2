@@ -1,0 +1,256 @@
+
+
+
+
+
+
+              
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% load static %}
+
+    <!--below added by iggy-->
+<!DOCTYPE html>
+    <!--above added by iggy-->
+<html lang="en">
+
+<head>
+    <!--
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        -->
+
+    <!--added by iggy-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--above added by iggy-->>
+
+    <link rel="stylesheet" href="{% static 'baseleftnav.css'%}">
+
+    <!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.flexmonster.com/flexmonster.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.flexmonster.com/demo.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <link href="https://cdn.webdatarocks.com/latest/webdatarocks.min.css" rel="stylesheet" />
+    <script src="https://cdn.webdatarocks.com/latest/webdatarocks.toolbar.min.js"></script>
+    <script src="https://cdn.webdatarocks.com/latest/webdatarocks.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdn.webdatarocks.com/latest/webdatarocks.googlecharts.js"></script>
+    -->
+    <!--
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    -->
+    <!-- Material Kit CSS -->
+    <!--
+    <link rel="stylesheet" href="{% static 'css/material-dashboard.css'%}" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    -->
+    <!-- Material Kit CSS -->
+    
+    <!--
+    <link rel="stylesheet" href="{% static 'css/material-dashboard.css'%}" />
+    -->
+    <!--This is for the sweetalert's animations witch are from someother website which is https://animate.style/ -->
+    <!--The href attribute specifies the location (URL) of a resource, that an anchor element points to, or the location 
+    of a linked resource, like a stylesheet. While the src attribute is used to embed a resource - usually URLs - into 
+    a document, think embedded images (<img>) and <script> tags
+    -->
+
+    <!--
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    -->
+  
+    <link rel="stylesheet" href="{% static 'css/baseleftnav.css'%}">
+
+</head>
+
+<body>
+    
+
+
+  
+
+  
+  <!--if the id="main" then it will shift you-->
+  <!--<div id="main" > -->
+    <!--<button class="openbtn" onclick="openNav()">☰</button>  -->
+    <!--<h2>Collapsed Sidebar</h2>-->
+    <!--<p>Click on the hamburger menu/bar icon to open the sidebar, and push this content to the right.</p>-->
+
+    <!--anything here is pushed-->
+
+  <!--</div>-->
+  
+
+
+
+
+
+
+
+<!-- Navbar -->
+  <!-- Navbar -->
+<nav id="main-navbar" class="navbar navbar-light bg-white fixed-top" style="padding-top:0px;padding-bottom: 0px;" >
+  <!-- Container wrapper -->
+  <div class="container-fluid" id="main">
+    <!-- Toggle button -->
+    <button
+            class="navbar-toggler"
+            type="button"
+            data-mdb-toggle="collapse"
+            data-mdb-target="#sidebarMenu"
+            aria-controls="sidebarMenu"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+ 
+            class="openbtn" onclick="openNav()"
+            >
+            ☰
+             <!--<i class="fas fa-bars"></i>-->
+    </button>
+    
+    <!-- Brand -->
+     <a class="navbar-brand" href="#">
+       <img
+             src="{% static 'img/mailppinyata.png'%}"
+             height="25"
+             alt=""
+             loading="lazy"
+             />
+     </a>
+     
+   </div>
+  <!-- Container wrapper -->
+ </nav>>
+
+
+ <div id="mySidebar" class="sidebar" style="margin-top:72px;">
+  <!--f the result is undefined, then the browser 
+    stays on the same page. void(0) is just a short and simple script that evaluates to undefined-->
+  <a href="#" class="closebtn" onclick="closeNav()" >x</a>
+  <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()" >x</a>-->
+  <a href="#">Broadcast</a>
+  <a href="#">Subcribers Subscribers</a>
+  <a href="#">Subscribers</a>
+  <a href="#">Lists </a>
+  <a href="#">Tags </a>
+  <a href="#">Custom Feilds </a>
+  <a href="#">Segments </a>
+  <a href="#">Form </a>
+  <a href="/signin">Log Out </a>
+</div>
+
+
+
+  <script src="{% static 'js/baseleftnav.js'%}"></script>
+
+
+
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    <strong>Message:</strong> {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endfor %}
+  
+  {% if user.is_authenticated %}
+  <h3>Hello {{ fname }}!</h3>
+  <h4>You're successfully logged in</h4>
+  <button type="submit"><a href="/signout">SignOut</a></button>
+  {% else %}
+  <button type="submit"><a href="/registeraccount">Register</a></button>
+  <br/>
+  <br/>
+  <button type="submit"><a href="/signin">SignIn</a></button>
+  {% endif %}
+
+
+
+
+
+   
+
+    
+
+    
+
+    <!-- jQuery library -->
+    <!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    -->
+    <!-- Latest compiled JavaScript -->
+    <!--
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    -->
+    <!--   JS Files   -->
+    <!--
+    <script src=" {% static 'js/core/jquery.min.js' %}"></script>
+    <script src="{% static 'js/core/popper.min.js' %}"></script>
+    <script src="{% static 'js/core/bootstrap-material-design.min.js' %}"></script>
+    <script src="https://unpkg.com/default-passive-events"></script>
+    <script src="{% static 'js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>
+-->
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <!--
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="{% static 'js/plugins/chartist.min.js' %}"></script>
+-->
+    <!--  Notifications Plugin    -->
+    <!--
+    <script src="{% static 'js/plugins/bootstrap-notify.js' %}"></script>
+    -->
+    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+    <!--
+    <script src="{% static 'js/material-dashboard.js' %}"></script>
+    -->
+
+    <!--below added by iggy-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!--above added by iggy-->
+</body>
+
+</html>

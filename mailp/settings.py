@@ -15,10 +15,26 @@ from pathlib import Path
 from django.contrib.messages import constants as messages
 import os
 
+
+
+
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 #BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+
+
+
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = 'ae30c81fcfa156'
+EMAIL_HOST_PASSWORD = 'db1462228c8403'
+EMAIL_PORT = '2525'
+
 
 
 # Quick-start development settings - unsuitable for production

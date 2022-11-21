@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+<!--even if you comment this out the system still recognizes it btw-->
+
+
+{% block content %}
+{% load static %}
+
+
+  <section class="vh-100">
+      <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-md-9 col-lg-6 col-xl-5">
+            <img src="{% static 'img/welcometomailp.png'%}" alt="" />
+            
+          </div>
+      
+            
+
+         
+          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+            
+            <form action="/registeraccount" method="post">
+            {% csrf_token %}
+
+              <div style="margin-top: 50px;">
+                <img src="{% static 'img/mailppinyata.png'%}" style="width:200px;height:200px;margin-left: 120px;margin-bottom: 20px;" alt="" />
+                
+
+              {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <strong>Message:</strong> {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {% endfor %}
+              
+
+            <!-- Text input -->
+            <div class="form-outline mb-4">
+                <input type="text" id="form3Example1" name="username" class="form-control form-control-lg" placeholder="Username" required/>
+                <label class="form-label" for="form3Example1">Username</label>
+            </div>
+
+            <!-- Text input -->
+            <div class="form-outline mb-4">
+                <input type="text" id="form3Example2" name="fname" class="form-control form-control-lg" placeholder="First Name" required/>
+                <label class="form-label" for="form3Example2">First Name</label>
+            </div>
+
+              <!-- Text input -->
+              <div class="form-outline mb-4">
+                <input type="text" id="form3Example3" name="lname" class="form-control form-control-lg" placeholder="Last Name" required/>
+                <label class="form-label" for="form3Example3">Last Name</label>
+              </div>
+    
+              <!-- Email input -->
+              <div class="form-outline mb-3">
+                <input type="email" id="form3Example4" name="email" class="form-control form-control-lg" placeholder="Email" required/>
+                <label class="form-label" for="form3Example4">Email</label>
+              </div>
+
+              <!-- Password input -->
+              <div class="form-outline mb-3">
+                <input type="password" id="form3Example5" name="password" class="form-control form-control-lg" placeholder="Password" required/>
+                <label class="form-label" for="form3Example5">Password</label>
+              </div>
+
+            <!-- Password input -->
+            <div class="form-outline mb-3">
+                <input type="password" id="form3Example6" name="cpassword" class="form-control form-control-lg" placeholder="Confirm your password" required/>
+                <label class="form-label" for="form3Example6">Confirm your password</label>
+                </div>
+
+              <label class="form-label" for="industry">Select your industry:</label>
+              <select class="form-select" aria-label="Default select example" name="industry" id="industry" required>
+                <option selected>Select your industry:</option>
+                <option value="education">Education</option>
+                <option value="fitness">Fitness</option>
+              </select>
+
+              <div class="text-center text-lg-start mt-4 pt-2">
+                <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" >Register</button>
+              </div>
+
+                </div>
+    
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+
+
+{% endblock %}
