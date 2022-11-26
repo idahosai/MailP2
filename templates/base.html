@@ -62,6 +62,13 @@
   
     <link rel="stylesheet" href="{% static 'css/baseleftnav.css'%}">
 
+
+    <link rel="stylesheet" href="{% static 'css/accountinformationcss.css'%}">
+    {% block newstyle %}
+    
+    {% endblock %}
+
+
 </head>
 
 <body>
@@ -129,14 +136,17 @@
     stays on the same page. void(0) is just a short and simple script that evaluates to undefined-->
   <a href="#" class="closebtn" onclick="closeNav()" >x</a>
   <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()" >x</a>-->
+  <a href="#">Home</a>
   <a href="#">Broadcast</a>
-  <a href="#">Subcribers Subscribers</a>
+  <a href="/importsubscribers">Import Subscribers</a>
   <a href="#">Subscribers</a>
   <a href="#">Lists </a>
   <a href="#">Tags </a>
   <a href="#">Custom Feilds </a>
   <a href="#">Segments </a>
   <a href="#">Form </a>
+  <a href="/accountinformation">Account Information </a>
+  <a href="/signin">Log Out </a>
   
 </div>
 

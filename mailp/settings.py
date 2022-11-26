@@ -123,14 +123,16 @@ WSGI_APPLICATION = "mailp.wsgi.application"
 
 DATABASES = {
     "default": {
-        #"ENGINE": "django.db.backends.sqlite3",
-        "ENGINE": 'django.db.backends.postgresql',
+        "ENGINE": "django.db.backends.sqlite3",
+        #"ENGINE": 'django.db.backends.postgresql',
         #"NAME": BASE_DIR / "db.sqlite3",
-        "NAME": 'mailpdatabase',
-        'USER': 'postgres',
-        'PASSWORD': 'mailp2020!',
-        'HOST':'mailpdatabasei.cbla1ovjyisy.us-east-2.rds.amazonaws.com',
-        'PORT': '5432'
+        'NAME': os.path.join(BASE_DIR , 'db.sqlite3'),
+
+        #"NAME": 'mailpdatabase',
+        #'USER': 'postgres',
+        #'PASSWORD': 'mailp2020!',
+        #'HOST':'mailpdatabasei.cbla1ovjyisy.us-east-2.rds.amazonaws.com',
+        #'PORT': '5432'
     }
 }
 

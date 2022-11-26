@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+<!--even if you comment this out the system still recognizes it btw-->
+
+{% block newstyle %}
+
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+
+
+
+        
+
+
+
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle mt-5" width="150px" src="{% static 'img/mailppinyata.png'%}"></div>
+                
+            </div>
+
+            <!--<p>{{ allData }}{{ allData.0.2 }}</p>>-->
+
+
+        
+        
+
+
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <form action="/accountinformation" method="post">
+                {% csrf_token %}
+
+                    
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Account Information</h4>
+                </div>
+
+
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                  <strong>Message:</strong> {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                {% endfor %}
+
+                <div class="row mt-2">
+                    <div class="col-md-6"><label class="labels">Fisrt Name</label>
+                        <input type="text" name="fname" class="form-control" placeholder="first name" value="{{ allData.0.2 }}"></div>
+                    <div class="col-md-6"><label class="labels">Last Name</label>
+                        <input type="text" name="lname" class="form-control" value="{{ allData.0.3 }}" placeholder="last name"></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12"><label class="labels">Username</label>
+                        <input type="text" name="username" class="form-control" placeholder="username" value="{{ allData.0.1 }}"></div>
+                    <div class="col-md-12"><label class="labels">Email</label>
+                        <input type="text" name="email" class="form-control" placeholder="email" value="{{ allData.0.4 }}" disabled></div>
+                    
+                
+
+                </div>
+                {{ allData.0.5 }}
+                {% if allData.0.5 == 'education' %}
+                <!--<h1>Hello</h1>-->
+                <div class="row mt-3">
+                    <label class="form-label" for="industry">Selected Industry:</label>
+                    <select class="form-select" aria-label="Default select example" name="industry" id="industry" required>
+                        <option value="education" selected>Education</option>
+                        <option value="fitness">Fitness</option>
+                      </select>
+                </div>
+                {% elif allData.0.5 == 'fitness' %}
+                <!--<h1>Welcome</h1>-->
+                
+                <div class="row mt-3">
+                    <label class="form-label" for="industry">Selected Industry:</label>
+                    <select class="form-select" aria-label="Default select example" name="industry" id="industry" required>
+                        <option value="fitness" selected>Fitness</option>
+                        <option value="education" >Education</option>
+                      </select>
+                </div>
+                {% endif %} 
+
+                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
+            </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+
+
+{% endblock %}

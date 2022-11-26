@@ -16,5 +16,10 @@ urlpatterns = [
     
     path('reset/<uidb64>/<token>', views.reset, name="reset"),
     path('resetpasswordconfirm', views.resetpasswordconfirm, name="resetpasswordconfirm"),
+
+    path('accountinformation', views.accountinformation, name="accountinformation"),
+    path('importsubscribers', views.importsubscribers, name="importsubscribers"),
+
+    path('importsubscriber-table_load_up',views.table_load_up,name='importsubscriber-table_load_up')
  
  ]

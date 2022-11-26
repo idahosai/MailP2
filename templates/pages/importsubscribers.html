@@ -1,0 +1,443 @@
+{% extends 'base.html' %}
+<!--even if you comment this out the system still recognizes it btw-->
+
+{% block newstyle %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+{% endblock %}
+
+
+
+
+{% block content %}
+{% load static %}
+
+<h1 style="margin-top: 40px;text-align: center;">Import Subscribers</h1>
+
+<div class="container" style="margin-top: 40px;">
+  <form action="/importsubscribers" method="post">
+    {% csrf_token %}
+
+
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      <strong>Message:</strong> {{ message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+
+
+    <!--float:left helps put two divs beside each other evenly-->
+    <div class="form-group" style="float:left;width:48%;height:20%;">
+      
+      <label for="buttonn" style="display:block;"><h6><b>Add Manually:</b></h6></label>
+
+      <button type="button" id="buttonn" class="btn btn-primary btn-lg" style="width:100%;height:40px;">Add Manually</button>
+    </div>
+
+
+    <div class="file-upload-wrapper" style="display: inline-block;width:48%;height:20%;margin-left: 4%;">
+      <label for="input-file-now" style="display:block;"><h6><b>Import From A TXT,CSV,XLSX File:</b></h6></label>
+
+      <!--<input type="file" id="input-file-now" class="file-upload" style="width:100%;height:80px;border-style: solid;"/>-->
+
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Upload</span>
+        </div>
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="inputGroupFile01" name="filegiven">
+          <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="form-group" style="width:100%;margin-top: 60px;">
+      <label for="comment4" style="display:block;"><h6><b>Past From File</b></h6></label>
+      <textarea rows="5" id="comment4" style="white-space: nowrap;width:100%"></textarea>
+    </div>
+
+    <label for="comment3" style="display:block;"><h6><b>View Import Result History:</b></h6></label>
+  <div class="container">
+    <div class="dropdown show" style="float:left;">
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Action
+      </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="#">Add to folder</a>
+        <a class="dropdown-item" href="#">Remove from folder</a>
+      </div>
+    </div>
+
+    <input class="form-control" id="myInput" type="text" placeholder="Search.." style="width:20%;margin-left: 53%">
+
+    <table id="nocommenttable" class="table table-striped table-bordered table-sm " cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>Import From Location</th>
+          <th>Details</th>
+          <th>Status</th>
+          <th>Date/Time</th>
+          <th>Data Analysis</th>
+        </tr>
+      </thead>
+      <!--
+      <tbody id="myTable">
+        <tr>
+          <td>CSV</td>
+          <td>2 contacts added to import segment</td>
+          <td>Imported</td>
+          <td>Aug 20, 2022</td>
+          <td>Do a prediction</td>
+
+        </tr>
+        <tr>
+          <td>Copy/Pasted File</td>
+          <td>2 emails are already in import segment that couldn't be imported</td>
+          <td>Imported</td>
+          <td>Aug 20, 2022</td>
+          <td>Do a prediction</td>
+
+        </tr>
+      </tbody>
+    -->
+
+    </table>
+  </div>
+
+
+  <script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+  </script>
+
+  <div class="form-group" style="float:left;width:33%;height:20%;">
+    <button type="button" class="btn btn-secondary">Email Analytics</button>
+  </div>
+
+
+  <div class="file-upload-wrapper" style="display: inline-block;width:33%;height:20%;">
+    <button type="button" class="btn btn-secondary">Do Industry Prediction</button>
+  </div>
+
+  <div class="file-upload-wrapper" style="display: inline-block;width:33%;height:20%;">
+    <button type="button" class="btn btn-secondary">Workflow Analytics</button>
+  </div>
+  <br>
+  <br>
+
+  <div class="file-upload-wrapper">
+    <label class="form-label" for="industry" style="margin-top: 10px;">Select A Status For Your Contacts:</label>
+    <select class="form-select" aria-label="Default select example" name="industry" id="industry" required>
+      <option selected>Select A Status For Your Contacts:</option>
+      <option value="subscribed">Subscribed</option>
+      <option value="unsubscribed">UnSubscribed</option>
+      <option value="nonsubscribed">Nonsubscribed</option>
+      <option value="cleaned">cleaned</option>
+    </select>
+
+  </div>
+
+  <br>
+  <br>
+
+  <div style="width:100%;">
+    <div style="float:left">
+      <input type="radio" id="dot" name="dot0" value="dotall" style="padding-bottom: 100px;margin-top: 96px;">
+    </div>
+
+    <div style="display: inline-block;width:95%;">
+
+      <div style="border-style: outset;">
+        <!--<p style="float:right;padding-bottom: 100px;">Create List</p>-->
+        <button type="button" class="btn btn-info" style="float:right;">Create List</button>
+        <br>
+        <div>
+          <input type="radio" id="dot2" name="dot" value="dotlist" style="float:left"> <p>Lists. 0 Selections. 17 Total</p>
+        </div>
+      </div>
+
+      <div style="border-style: outset;">
+        <!--<p style="float:right">Create Form</p>-->
+        <button type="button" class="btn btn-info" style="float:right;">Create Form</button>
+        <br>
+        <div>
+          <input type="radio" id="dot3" name="dot" value="dotform" style="float:left"> <p>Forms. 2 Selection. 6 Total</p>
+        </div>
+      </div>
+      
+
+      <div style="width:100%;">
+
+        <div style="border-style: outset;display: inline-block;width:33%;">
+          <br>
+          <div>
+            <input type="radio" id="dot4" name="dot" value="dottag" style="float:left"> <p>Tags. 3 Selection. 6 Total</p>
+          </div>
+        </div>
+
+        <div style="border-style: outset;display: inline-block;width:33%;">
+          <!--<span style="float:right">Create Identification Tag</span>-->
+          <button type="button" class="btn btn-info" style="float:right;">Create Identification Tag</button>
+          <br>
+          <div>
+            <input type="radio" id="dot5" name="dot" value="dotidentificationtag" style="float:left"> <p>Identification Tags. 3 Selection. 6 Total</p>
+          </div>
+        </div>
+
+        <div style="border-style: outset;display: inline-block;width:33%;">
+          <!--<span style="float:right">Create Purchase Tag</span>-->
+          <button type="button" class="btn btn-info" style="float:right;">Create Purchase Tag</button>
+          <br>
+          <div>
+            <input type="radio" id="dot6" name="dot" value="dotpurchasetag" style="float:left"> <p>Purchase Tags. 3 Selection. 10 Total</p>
+          </div>
+        </div>
+
+      </div>
+
+      <input class="form-control" id="myInput2" type="text" placeholder="Search.." >
+
+      <table id="dtHorizontalVerticalExample2" class="table table-striped table-bordered table-sm " cellspacing="0"width="100%">
+        <thead>
+        <tr>
+          <th><input type="checkbox" id="dot7" name="dot7" value="dot7"></th>
+          <th>Tags</th>
+
+        </tr>
+        </thead>
+
+        <tbody id="myTable2">
+        <tr>
+          <td><input type="checkbox" id="dot8" name="dot8" value="dot8"></td>
+          <td>tag A</td>
+
+
+        </tr>
+        <tr>
+          <td><input type="checkbox" id="dot9" name="dot9" value="dot9"></td>
+          <td>tag B</td>
+
+
+        </tr>
+        </tbody>
+      </table>
+
+      
+    </div>
+
+
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-lg" style="float:right;padding-left: 2.5rem; padding-right: 2.5rem;" >Next</button>
+
+
+  
+    
+
+
+  </form>
+  
+</div>
+
+
+<script>
+
+  /*
+  $(document).ready(function(){
+  })*/
+  
+  //the type can be 'POST'
+  //data is like the context variable you will python backend
+
+  var theAction = "1";
+  $.ajax({
+        type: "get",
+        url: "{% url 'importsubscriber-table_load_up' %}",
+        dataType: "json",
+        data: { actionToTake: JSON.stringify(theAction) },
+        success: function(response) {
+             
+             var theOutput = JSON.parse(response.allData);
+             
+             //this shows "[object][object]"
+
+             //this only parses JSON string, if it's not a Json string,it will give an error
+             //var theOutput2 = JSON.parse(response.allDataStudentAccount);
+             //var theOutput3 = JSON.parse(response.allDataStudentAuth)
+                    //var theOutput = response.allData;
+             //console.log(response.theOutput);
+
+
+            /*
+             alert(response.allData); //this shows the actual things inside the object
+            */
+
+
+
+             //i can just start using it since this one doesn't need to be parsed
+             //var theOutput = JSON.parse(response.allDataStudentAccount);
+              /*
+             alert(response);
+             var g = JSON.stringify(response);
+             alert(g[0]);
+             alert(JSON.parse(response));
+             */
+             
+             /*
+             alert(response.allDataStudentAccount);
+             */
+             //alert(response.response.allDataStudentAuth);
+            /*
+             alert(response.allDataStudentAccount)
+             alert(theOutput2)
+             alert(response[0]);
+             alert(response.allDataStudentAccount[0]);
+             */
+             //alert(response.allDataStudentAccount)
+
+
+                    //alert((response.allData)[8]);
+                    //alert(theOutput)// this shows "[object][object]"
+                    var table = $('<tbody>');
+              
+              //var table = document.getElementById('groupTable')
+                     //alert(theOutput);
+              var row = $('<tr>');
+ 
+              var name1 = "John";
+              var name2 = "Green";
+              var name3 = "First";
+              var name4 = "Last";
+               /*
+              for (var i=0; i<theOutput.length; i++) {
+               var obj = theOutput[i];
+               alert(obj[0]);
+              } 
+             */
+ 
+              for (var i=0; i<theOutput.length; i++) { 
+ 
+               
+ 
+                    var obj = theOutput[i];//this says [object,object]
+                    //alert(theOutput[i].fields);
+                    //alert(JSON.parse(theOutput[i]));
+                    var fields = obj.fields;
+                    //alert(fields)
+                    var pk = obj.pk;
+                    //make sure the foreign key table feild value isn't null so you can go into it and maybe go into it further if the next foreign key table feild value isn't null
+                    if (fields.tagid != null){
+ 
+                     
+ 
+ 
+                       //alert(fields.title); //this shows the actual result of the one value
+                       //var eventcode = fields.eventcode;
+                       //var collegecode = fields.collegecode;
+ 
+                       // IF YOU PUT THE "" at the end of of > the table won't load. EXAMPLE is directly BELOW by 1 space
+                       // data-* is for html5. 
+                       var row = $('<tr data-row-id="' + pk + '">');
+                       //alert(pk);
+                       //django takes care of joins automatically so we can do this
+ 
+                       
+                      
+                       row.append('<td onclick="toEditPageNow(this)">' + '<input type="checkbox" id="'+fields.tagid.id +'" name="'+fields.tagid.id +'" value="'+fields.tagid.id +'"/>'  + '</td>');
+                       
+                       row.append('<td onclick="toEditPageNow(this)">'  + fields.tagid.name + '</td>');
+                       /*
+                       row.append('<td onclick="toEditPageNow(this)">' + fields.tagid["auth_id"].sheridan_id + '</td>');
+                       
+                       //row.append('<td>' + fields.student_id.auth_id.sheridan_id + '</td>');
+                       //row.append('<td>' + "First" + " " + "Name" + '</td>');
+                       //row.append('<td>' + "9516584235" + '</td>');
+                       //This below will print the whole list if the foreigh key is stored as a list in the object when serialized
+                       //row.append('<td>' + fields.student_id + '</td>');
+                       row.append('<td onclick="toEditPageNow(this)">' + fields.title + '</td>');
+                       row.append('<td onclick="toEditPageNow(this)">' + fields.start_date + '</td>');
+                       row.append('<td onclick="toEditPageNow(this)">' + fields.end_date + '</td>');
+                       if(fields.staff_notes == null){
+                         row.append('<td onclick="toEditPageNow(this)"></td>');
+                       }
+                       else{
+                         row.append('<td onclick="toEditPageNow(this)">' + fields.staff_notes + '</td>');
+                         
+                       }
+                       
+                       row.append('<td><input  type="button" onclick="deleteRowMaybe(this)" value="Delete"></td>')
+                       // putting the / at the right side of a single element creates the whole elemement rather than close a
+                       //previously opened element so watch out, an example is: row.append('<tr/>');
+                       */
+                       row.append('</tr>');
+                       table.append(row);
+                     }
+ 
+               }
+                 
+ 
+ 
+             
+                      
+ 
+               
+               //var row = $('<tr/>');//its possible that i must write this variable in this way befor appending
+               //row.append($('</tr>'));
+               //table.append(row);
+               table.append($('</tbody>'));
+               //table.add
+               //$('#groupTable').appendChild = table;
+               //$('#groupTable').innerHTML(table);
+               //$('#groupTable').innerHTML(table.children)
+               $('#dtHorizontalVerticalExample2').append(table);
+               
+ 
+              $(theOutput).each(function() {//use to be $(response)
+                    //alert(response.allData)
+                    //var obj = theOutput[i];
+                    //var fields = obj.fields;
+                    //var eventcode = fields.eventcode;
+                    //var collegecode = fields.collegecode;
+                    //alert(obj)
+                    //alert(fields.title)
+                    //var row = $('<tr/>');
+                    //row.append('<td>' + fields.title + '</td>');
+                    //row.append('<td>' + fields.title + '</td>');
+                    /*
+                    var row = $('<tr/>');
+                    row.append('<td>' + this.Value + '</td>');
+                    row.append('<td>' + this.Value + '</td>');
+                    */
+                    
+                    //alert(row);
+                    //alert(this.Value);
+              });
+              
+              //table.append(row);  
+              //this is saying all the elements with this tag should have "this" in it                  
+              //$('#groupTable').html(table); // not refreshing table withdata
+              
+             //alert(response.allData)
+        },
+        error: function(request, status, error) {
+            alert("this is an error");
+            //alert(request.responseText);
+        }
+    });
+</script>
+
+
+{% endblock %}
