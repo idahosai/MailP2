@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+<!--even if you comment this out the system still recognizes it btw-->
+
+
+{% block content %}
+{% load static %}
+
+
+
+<p style="margin-top: 40px;">{{ bulkimportid }}</p>>
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

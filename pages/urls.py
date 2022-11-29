@@ -20,6 +20,9 @@ urlpatterns = [
     path('accountinformation', views.accountinformation, name="accountinformation"),
     path('importsubscribers', views.importsubscribers, name="importsubscribers"),
 
-    path('importsubscriber-table_load_up',views.table_load_up,name='importsubscriber-table_load_up')
+    path('importsubscriber-table_load_up',views.table_load_up,name='importsubscriber-table_load_up'),
  
+    path('importsubscribers_load_table',views.importsubscribers_load_table, name='importsubscribers_load_table'),
+    path('matchtotable', views.matchtotable, name="matchtotable"),
+    
  ]

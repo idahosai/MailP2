@@ -11,6 +11,8 @@ from .models import Attachedgroup
 from .models import Group
 from .models import Form
 from .models import AttachedForm
+from .models import AttachedAll
+from .models import Bulkimport
 # and then you register that by doing the follwoing:
 admin.site.register(Attachedtag)
 admin.site.register(Tag)
@@ -20,3 +22,5 @@ admin.site.register(Attachedgroup)
 admin.site.register(Group)
 admin.site.register(AttachedForm)
 admin.site.register(Form)
+admin.site.register(AttachedAll)
+admin.site.register(Bulkimport)

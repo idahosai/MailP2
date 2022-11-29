@@ -1,4 +1,5 @@
 import datetime
+import re
 from django.conf import settings
 from django.shortcuts import render, redirect
 
@@ -13,12 +14,14 @@ from django.utils.encoding import force_bytes, force_text
 from . tokens import generate_token
 
 
-from pages.models import AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag
+from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag
 #from pages import settings
 from django.core import serializers
 
 from django.http import JsonResponse
+from django.utils import timezone
 
+from django.core.files.storage import default_storage
 # Create your views here.
 def index(request):
     return render(request, 'pages/index.html')
@@ -429,7 +432,7 @@ def importsubscribers(request):
         print("_____________________________________________________")
         """
 
-
+        """
         print("_________________________________________________________________________")
         #mytag = Tag.objects.create(id = 3,name="hero", dateofcreation = datetime.date.today())
         myform = Form.objects.create(name="hero", dateofcreation = datetime.date.today())
@@ -450,10 +453,210 @@ def importsubscribers(request):
         print(objectQuerySetform)
         print(dataD)
         print("_____________________________________________________")
+        """
+
+        """
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        objectQuerySettag = Attachedtag.objects.filter(tagid__type = "Identification").select_related("tagid")
+        print(objectQuerySettag)
+        dataE = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['dateofattachement','tagid'])
+        print(dataE)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        """
+        """
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        objectQuerySettag = Attachedtag.objects.filter(tagid__type = "Purchase").select_related("tagid")
+        print(objectQuerySettag)
+        dataE = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['dateofattachement','tagid'])
+        print(dataE)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        """
 
 
-        filegiven = request.POST['filegiven']
+        industry = request.POST['industry']
+        #filegiven = request.POST['filegiven']
+        fileg = request.FILES.get("filegiven")
+        
+        #fileg_file = Bulkimport.objects.create(filename=fileg.name,file=fileg, status = industry)
+        #file_path= fileg_file.file.path
+        
+
+
+        
+        #the reason why i had error with the radio button is cus i named the check box thesame name as the radio button
+        dot = request.POST['dot']
+        #dot = request.POST.get('dot')
+ 
+        
+        #checkboxtable = request.POST['119']
+        print("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+        #print(filegiven)
+        print(fileg)
+        print(industry)
+        print(dot)
+
+
+        striped_name = dot.strip()
+        #striped_name.replace(" ", "")
+        #s.replace(" ", "")        
+        #print("name_of_student.strip() = : " + name_of_student.strip())
+        print("striped name is: " + striped_name)
+        #turned to a list of the first name and last name
+        #this doesn't work
+        #firstname_lastname = striped_name.split(r'\W') #r'[\s]'
+        # this works but i must import re first
+        name_value_list = re.split("\W+", striped_name)
+        #r'[^\w]'
+        print("going into first_lastname: ")
+        for h in name_value_list:
+            print("_]"+h+"[_")
+
+        print("out of the loop")
+        print("firstname_lastname is: " + name_value_list[0] + name_value_list[1])
+        print(name_value_list)
+        #print(checkboxtable)
         #filegiven = request.FILES['filegiven']
+        
+
+        """
+        maxlength = len(name_value_list[0:-1])
+
+        for i in range(len(name_value_list[0:-1])):
+            if(name_value_list[0:-1][i] == 'dotlist'):
+                g = i+1
+                h = "true"
+                while h == "true":
+                    if g >= maxlength or (name_value_list[0:-1][g] == 'dotlist') or (name_value_list[0:-1][g] == 'dotform') or (name_value_list[0:-1][g] == 'dottag' or (name_value_list[0:-1][g] == 'dotidentificationtag') or (name_value_list[0:-1][g] == 'dotpurchasetag')):
+                        h = "false"
+                    else:
+                        g = g +1
+                        #id of attached dotlist
+                        name_value_list[g]
+                        print("id of attached dotlist=" + name_value_list[g])
+                        i= i+1
+            if(name_value_list[0:-1][i] == 'dotform'):
+                g = i+1
+                h = "true"
+                while h == "true":
+                    if g >= maxlength or (name_value_list[0:-1][g] == 'dotlist') or (name_value_list[0:-1][g] == 'dotform') or (name_value_list[0:-1][g] == 'dottag' or (name_value_list[0:-1][g] == 'dotidentificationtag') or (name_value_list[0:-1][g] == 'dotpurchasetag')):
+                        h = "false"
+                    else:
+                        g = g +1
+                        #id of attached dotlist
+                        name_value_list[g]
+                        print("id of attached dotform=" + name_value_list[g])
+                        i= i+1
+            if(name_value_list[0:-1][i] == 'dottag'):
+                g = i+1
+                h = "true"
+                while h == "true":
+                    if g >= maxlength or (name_value_list[0:-1][g] == 'dotlist') or (name_value_list[0:-1][g] == 'dotform') or (name_value_list[0:-1][g] == 'dottag' or (name_value_list[0:-1][g] == 'dotidentificationtag') or (name_value_list[0:-1][g] == 'dotpurchasetag')):
+                        h = "false"
+                    else:
+                        g = g +1
+                        #id of attached dotlist
+                        name_value_list[g]
+                        print("id of attached dottag=" + name_value_list[g])
+                        i= i+1
+
+            if(name_value_list[0:-1][i] == 'dotidentificationtag'):
+                g = i+1
+                h = "true"
+                while h == "true":
+                    if g >= maxlength or (name_value_list[0:-1][g] == 'dotlist') or (name_value_list[0:-1][g] == 'dotform') or (name_value_list[0:-1][g] == 'dottag' or (name_value_list[0:-1][g] == 'dotidentificationtag') or (name_value_list[0:-1][g] == 'dotpurchasetag')):
+                        h = "false"
+                    else:
+                        g = g +1
+                        #id of attached dotlist
+                        name_value_list[g]
+                        print("id of attached dotidentificationtag=" + name_value_list[g])
+                        i= i+1
+            if(name_value_list[0:-1][i] == 'dotpurchasetag'):
+                g = i+1
+                h = "true"
+                while h == "true":
+                    if g >= maxlength or (name_value_list[0:-1][g] == 'dotlist') or (name_value_list[0:-1][g] == 'dotform') or (name_value_list[0:-1][g] == 'dottag' or (name_value_list[0:-1][g] == 'dotidentificationtag') or (name_value_list[0:-1][g] == 'dotpurchasetag')):
+                        h = "false"
+                    else:
+                        g = g +1
+                        #id of attached dotlist
+                        name_value_list[g]
+                        print("id of attached dotpurchasetag=" + name_value_list[g])
+                        i= i+1
+
+        """
+
+
+                #  Saving POST'ed file to storage
+        #file = request.FILES['myfile']
+        file_name = default_storage.save(fileg.name, fileg)
+        print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+        print(file_name)
+        print(fileg.name)
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print(fileg)
+        
+        #  Reading file from storage
+        filex = default_storage.open(file_name)
+        #file_url = default_storage.url(file_name)
+        #print(filex)
+        #print(file_url)
+        
+
+
+
+        bulkimporthere = Bulkimport.objects.create(datetime = timezone.now(), status = industry, filename = fileg.name, file = filex)
+        bulkimporthere.save()
+        attachedall = AttachedAll.objects.create(dateofattachement = timezone.now())
+        attachedall.bulkimportid = bulkimporthere
+        #attachedall.save()
+
+
+
+
+        
+
+
+
+        #obj = Attachedgroup.objects.get(pk=)
+        if (name_value_list[0] =='dotlist'):
+            for n in name_value_list[1:-1]:
+                print("the value of n is =" + n)
+                obj = Attachedgroup.objects.get(pk=int(n))
+                attachedall.attachedgroupid = obj
+                attachedall.save()
+                #attachedall
+                #fileg_file = Bulkimport.objects.create(filename=filegiven, status = industry, attachedgroupid = int(n))
+        if (name_value_list[0] =='dotform'):
+            for n in name_value_list[1:-1]:
+                print("the value of n is =" + n)
+                obj = AttachedForm.objects.get(pk=int(n))
+                attachedall.attachedformid = obj
+                attachedall.save()
+        if (name_value_list[0] =='dottag'):
+            for n in name_value_list[1:-1]:
+                print("the value of n is =" + n)
+                obj = Attachedtag.objects.get(pk=int(n))
+                attachedall.attachedtagid = obj
+                attachedall.save()
+        if (name_value_list[0] =='dotidentificationtag'):
+            for n in name_value_list[1:-1]:
+                print("the value of n is =" + n)
+                obj = Attachedtag.objects.get(pk=int(n))
+                attachedall.attachedtagid = obj
+                attachedall.save()
+        if (name_value_list[0] =='dotpurchasetag'):
+            for n in name_value_list[1:-1]:
+                print("the value of n is =" + n)
+                obj = Attachedtag.objects.get(pk=int(n))
+                attachedall.attachedtagid = obj
+                attachedall.save()
+        
+
+        attachedall.save()
+
+        bulkimporthere.id  
+
         """
         dot = request.POST['dot0']
         
@@ -471,34 +674,49 @@ def importsubscribers(request):
                 destination.write(chunk)  
         
         """
+        context = {'bulkimportid': bulkimporthere.id }
+        #context = {'allData': dataC}
 
+
+        return redirect(request,'matchtotable')
     return render(request,'pages/importsubscribers.html')
+
+def matchtotable(request):
+
+    return render(request,'pages/matchtotable.html')
+
+
 
 
 def table_load_up(request):
 
-    
-    print("********************************************************")
+    #timezone.now()
+    #print("********************************************************")
     #mytag = Tag.objects.create(id = 3,name="hero", dateofcreation = datetime.date.today())
-    mytag = Tag.objects.create(name="hero3", dateofcreation = datetime.date.today(), type="Identification")
+    mytag = Tag.objects.create(name="tagP", dateofcreation = timezone.now(), type="Purchase")#Identification
     #Cannot assign "1": "Attachedtag.tagid" must be a "Tag" instance.
     mytag.save()
+    mytag2 = Tag.objects.create(name="TagI", dateofcreation = timezone.now(), type="Identification")#
+    #Cannot assign "1": "Attachedtag.tagid" must be a "Tag" instance.
+    mytag2.save()
     #print(mytag)
-    myattachedtag = Attachedtag.objects.create(dateofattachement = datetime.date.today(), tagid = mytag)
-    myattachedtag.save()
-    print(myattachedtag)
+    myattachedtagP = Attachedtag.objects.create(dateofattachement = timezone.now(), tagid = mytag)
+    myattachedtagP.save()
+    myattachedtagI = Attachedtag.objects.create(dateofattachement = timezone.now(), tagid = mytag2)
+    myattachedtagI.save()
+    #print(myattachedtag)
     objectQuerySet = Attachedtag.objects.all().values('tagid').distinct()
-    print(objectQuerySet)
-    print(Attachedtag.objects.all())
-    print(Attachedtag.objects.all().values())
+    #print(objectQuerySet)
+    #print(Attachedtag.objects.all())
+    #print(Attachedtag.objects.all().values())
     objectQuerySet = Attachedtag.objects.all().select_related("tagid")
     #the feild should only be the feild of thebouter object not the inner object for it to work
     dataB = serializers.serialize("json", objectQuerySet, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['dateofattachement','tagid'])
 
-    print("*********")
-    print(objectQuerySet)
-    print(dataB)
-    print("********************************************************")
+    #print("*********")
+    #print(objectQuerySet)
+    #print(dataB)
+    #print("********************************************************")
     
 
 
@@ -506,54 +724,69 @@ def table_load_up(request):
 
 
 
-    print("_________________________________________________________________________")
+    #print("_________________________________________________________________________")
     #mytag = Tag.objects.create(id = 3,name="hero", dateofcreation = datetime.date.today())
-    mygroup = Group.objects.create(name="hero", dateofcreation = datetime.date.today())
+    mygroup = Group.objects.create(name="groupo", dateofcreation = timezone.now())
     #Cannot assign "1": "Attachedtag.tagid" must be a "Tag" instance.
     mygroup.save()
     #print(mytag)
-    myattachedgroup = Attachedgroup.objects.create(dateofattachement = datetime.date.today(), groupid = mygroup)
+    myattachedgroup = Attachedgroup.objects.create(dateofattachement = timezone.now(), groupid = mygroup)
     myattachedgroup.save()
-    print(myattachedgroup)
+    #print(myattachedgroup)
     objectQuerySetgroup = Attachedgroup.objects.all().values('groupid').distinct()
-    print(objectQuerySetgroup)
-    print(Attachedtag.objects.all())
-    print(Attachedtag.objects.all().values())
+    #print(objectQuerySetgroup)
+    #print(Attachedtag.objects.all())
+    #print(Attachedtag.objects.all().values())
     objectQuerySetgroup = Attachedgroup.objects.all().select_related("groupid")
     #the feild should only be the feild of thebouter object not the inner object for it to work
     dataC = serializers.serialize("json", objectQuerySetgroup, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['dateofattachement','groupid'])
 
-    print("___________")
-    print(objectQuerySetgroup)
-    print(dataC)
-    print("_____________________________________________________")
+   # print("___________")
+   # print(objectQuerySetgroup)
+    #print(dataC)
+    #print("_____________________________________________________")
     
 
 
 
-    print("_________________________________________________________________________")
+    #print("_________________________________________________________________________")
     #mytag = Tag.objects.create(id = 3,name="hero", dateofcreation = datetime.date.today())
-    myform = Form.objects.create(name="hero", dateofcreation = datetime.date.today())
+    myform = Form.objects.create(name="Formo", dateofcreation = timezone.now())
     #Cannot assign "1": "Attachedtag.tagid" must be a "Tag" instance.
     myform.save()
     #print(mytag)
-    myattachedform = AttachedForm.objects.create(dateofattachement = datetime.date.today(), formid = myform)
+    myattachedform = AttachedForm.objects.create(dateofattachement = timezone.now(), formid = myform)
     myattachedform.save()
-    print(myattachedform)
+    #print(myattachedform)
     objectQuerySetform = AttachedForm.objects.all().values('formid').distinct()
-    print(objectQuerySetform)
-    print(AttachedForm.objects.all())
-    print(AttachedForm.objects.all().values())
+    #print(objectQuerySetform)
+    #print(AttachedForm.objects.all())
+    #print(AttachedForm.objects.all().values())
     objectQuerySetform = AttachedForm.objects.all().select_related("formid")
     #the feild should only be the feild of thebouter object not the inner object for it to work
     dataD = serializers.serialize("json", objectQuerySetform, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['dateofattachement','formid'])
-    print("___________")
-    print(objectQuerySetform)
-    print(dataD)
-    print("_____________________________________________________")
+    #print("___________")
+    #print(objectQuerySetform)
+    #print(dataD)
+    #print("_____________________________________________________")
 
 
 
+    
+    #print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    objectQuerySettagi = Attachedtag.objects.filter(tagid__type = "Identification").select_related("tagid")
+    #print(objectQuerySettag)
+    dataE = serializers.serialize("json", objectQuerySettagi, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['dateofattachement','tagid'])
+    #print(dataE)
+    #print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    
+
+    #print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    objectQuerySettagp = Attachedtag.objects.filter(tagid__type = "Purchase").select_related("tagid")
+    #print(objectQuerySettag)
+    dataF = serializers.serialize("json", objectQuerySettagp, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['dateofattachement','tagid'])
+    #print(dataE)
+    #print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 
 
 
@@ -577,7 +810,107 @@ def table_load_up(request):
     response = {
         'allData': dataB, #,
         'allDatatwo': dataC, #,
-        'allDatathree': dataD
+        'allDatathree': dataD,
+        'allDatafour':dataE,
+        'allDatafive':dataF,
     }
     return JsonResponse(response)
     #return render(request,'pages/importsubscribers.html', response)
+
+
+#FOR SOME REASON THIS FUNCTION DOESNT GET RUNED
+def importsubscribers_load_table(request):
+    print("you are in importasubscribers_load_table)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))")
+    #action_to_take = request.GET.get('actionToTake', None)
+
+    action_to_take = request.GET.get('actionToTake', None)
+
+    print(action_to_take)
+
+    print("you are in importasubscribers_load_table)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))")
+   
+    print("_________________________________________________________________________")
+    objectQuerySetgroup = Attachedgroup.objects.all().values('groupid').distinct()
+    print(objectQuerySetgroup)
+    print(Attachedtag.objects.all())
+    print(Attachedtag.objects.all().values())
+    objectQuerySetgroup = Attachedgroup.objects.all().select_related("groupid")
+    #the feild should only be the feild of thebouter object not the inner object for it to work
+    dataB = serializers.serialize("json", objectQuerySetgroup, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['dateofattachement','groupid'])
+
+    print("___________")
+    print(objectQuerySetgroup)
+    print(dataB)
+    print("_____________________________________________________")
+    if action_to_take == "List":
+        print("_________________________________________________________________________")
+        objectQuerySetgroup = Attachedgroup.objects.all().values('groupid').distinct()
+        print(objectQuerySetgroup)
+        print(Attachedtag.objects.all())
+        print(Attachedtag.objects.all().values())
+        objectQuerySetgroup = Attachedgroup.objects.all().select_related("groupid")
+        #the feild should only be the feild of thebouter object not the inner object for it to work
+        dataB = serializers.serialize("json", objectQuerySetgroup, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['dateofattachement','groupid'])
+
+        print("___________")
+        print(objectQuerySetgroup)
+        print(dataB)
+        print("_____________________________________________________")
+    elif action_to_take =="Form":
+        print("_________________________________________________________________________")
+        objectQuerySetform = AttachedForm.objects.all().values('formid').distinct()
+        print(objectQuerySetform)
+        print(AttachedForm.objects.all())
+        print(AttachedForm.objects.all().values())
+        objectQuerySetform = AttachedForm.objects.all().select_related("formid")
+        #the feild should only be the feild of thebouter object not the inner object for it to work
+        dataB = serializers.serialize("json", objectQuerySetform, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['dateofattachement','formid'])
+        print("___________")
+        print(objectQuerySetform)
+        print(dataB)
+        print("_____________________________________________________")
+    elif action_to_take =="Alltag":
+        print("********************************************************")
+        objectQuerySet = Attachedtag.objects.all().values('tagid').distinct()
+        print(objectQuerySet)
+        print(Attachedtag.objects.all())
+        print(Attachedtag.objects.all().values())
+        objectQuerySet = Attachedtag.objects.all().select_related("tagid")
+        #objectQuerySet = Attachedtag.objects.filter(tagid = , delete_appointment_row = False, start_date__lte = datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, datetime.datetime.now().time().hour, datetime.datetime.now().time().minute, datetime.datetime.now().time().second)).select_related("student_id").prefetch_related('student_id__auth_id').order_by("-start_date")
+        #the feild should only be the feild of thebouter object not the inner object for it to work
+        dataB = serializers.serialize("json", objectQuerySet, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['dateofattachement','tagid'])
+        print("*********")
+        print(objectQuerySet)
+        print(dataB)
+        print("********************************************************")
+    elif action_to_take =="Identification":
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        objectQuerySettag = Attachedtag.objects.filter(tagid__type = "Identification").select_related("tagid")
+        print(objectQuerySettag)
+        dataB = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['dateofattachement','tagid'])
+        print(dataB)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    elif action_to_take =="Purchase":
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        objectQuerySettag = Attachedtag.objects.filter(tagid__type = "Purchase").select_related("tagid")
+        print(objectQuerySettag)
+        dataB = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['dateofattachement','tagid'])
+        print(dataB)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
+
+    response = {
+        'allData': dataB
+    }
+    #This doesn't work
+    #action_to_take2 = request.GET['actionToTake']
+    #print("this is action_to_takeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee: " + action_to_take + "and action_to_take2 is " + action_to_take2)
+    print("------------------------------------------Going to importsubsribers now")
+    #print("*************************************************************************************************************************")
+    print("you are out ")
+    """
+    response = {
+    'redirectpageid': action_to_take
+    }
+    """
+    return JsonResponse(response)
