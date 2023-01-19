@@ -51,10 +51,10 @@ SECRET_KEY = "django-insecure-9k^fw-v1sce4fk+=*e6gbd5hbi*z6ul_u&dr!dbh02cb1k)ri4
 #i found this sollution to the problem here https://stackoverflow.com/questions/60620434/django-cannot-find-static-files
 #'DEBUG =True ' is only for when your debuging on your own not when you want to deploy
 #so make the necessary correction to 'DEBUG - False' when you decide to deploy
-DEBUG = True
-#DEBUG = False
+#DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['tiardenv.eba-ncmc4uxa.us-east-2.elasticbeanstalk.com','jumboenv.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com', 'jumboenv2.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com','MailPinyata3-dev.us-east-2.elasticbeanstalk.com','*','localhost', '127.0.0.1', '5432']
+ALLOWED_HOSTS = ['mpmp-env.eba-7dkurhg2.us-east-2.elasticbeanstalk.com','jumboenv.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com', 'jumboenv2.eba-bxb7n3aa.us-east-2.elasticbeanstalk.com','MailPinyata3-dev.us-east-2.elasticbeanstalk.com','*','localhost', '127.0.0.1', '5432']
 
 # i just added the below code
 # Application definition
@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "pages",
+    'rest_framework',
     #"pages.apps.PagesConfig",
     #'schedule',
     #'djangobower',
@@ -123,16 +124,17 @@ WSGI_APPLICATION = "mailp.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        #"ENGINE": 'django.db.backends.postgresql',
+        #"ENGINE": "django.db.backends.sqlite3",
+        "ENGINE": 'django.db.backends.postgresql',
         #"NAME": BASE_DIR / "db.sqlite3",
-        'NAME': os.path.join(BASE_DIR , 'db.sqlite3'),
+        #'NAME': os.path.join(BASE_DIR , 'db.sqlite3'),
 
-        #"NAME": 'mailpdatabase',
-        #'USER': 'postgres',
-        #'PASSWORD': 'mailp2020!',
+        "NAME": 'mailpdatabase',
+        'USER': 'postgres',
+        'PASSWORD': 'mailp2020!',
         #'HOST':'mailpdatabasei.cbla1ovjyisy.us-east-2.rds.amazonaws.com',
-        #'PORT': '5432'
+        'HOST':'mailpdatabasei.chu2n64apc5u.us-east-2.rds.amazonaws.com',
+        'PORT': '5432'
     }
 }
 

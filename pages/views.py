@@ -22,6 +22,8 @@ from django.http import JsonResponse
 from django.utils import timezone
 
 from django.core.files.storage import default_storage
+
+#from rest_framework.response import api_view
 # Create your views here.
 def index(request):
     return render(request, 'pages/index.html')
@@ -156,6 +158,60 @@ def signin(request):
             return redirect('signin')
 
     return render(request, 'pages/signin.html')
+
+
+#@api_view(['POST'])
+def checksigninapi(request):
+    if request.method == 'GET':
+        #username = request.POST['username']
+        #password = request.POST['password']
+
+        username = request.GET['username']
+        password = request.GET['password']
+        #username = "iggy"
+        #password = "Iggyboy4"
+
+        user = authenticate(request, username=username, password=password) 
+        #print(user.first_name)
+        #print("******************************************************")
+        if user is not None:
+            #login(request, user)
+            #fname = user.first_name
+            #messages.success(request, "Logged In Sucessfully!!")
+            #render(request, 'pages/index.html', {'fname': "yoyo"})
+            #return render(request, 'pages/index.html', {'fname': fname})
+        
+            print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            #objectQuerySettag = Attachedtag.objects.filter(tagid__type = "Purchase").select_related("tagid")
+
+            #make sure that username is unique for all who log in to the system
+            objectQuerySettag = Staff.objects.filter(username = username)
+            #print(objectQuerySettag)
+            dataB = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['id','userid', 'username', 'firstname','lastname','emailaddress','industry'])
+            print(dataB)
+            print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            response = {
+            'istrue': "true",
+            'Staff': dataB
+            }
+
+            return JsonResponse(response)
+        else:
+            #messages.error(request, "Bad Credentials!") 
+            #return redirect('signin')
+            response = {
+            'istrue': "false",
+            'Staff': "is null"
+
+            }
+            return JsonResponse(response)
+
+    response = {
+            'istrue': "unknown",
+            'Staff': "is null"
+            }
+    return JsonResponse(response)
+    #return render(request, 'pages/signin.html')
 
 def signout(request):
     auth.logout(request)
@@ -352,7 +408,9 @@ def accountinformation(request):
 
 
     current_user = request.user 
-    Staff.objects.get()
+    #i dont know why this aint commented out but imma do it now
+    #Staff.objects.get()
+    
     stafholderobjectQuerySet = Staff.objects.filter(userid = current_user.id).values_list('userid', 'username', 'firstname', 'lastname', 'emailaddress', 'industry')
     # dataC = serializers.serialize("json", stafholderobjectQuerySet, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['userid', 'username', 'firstname', 'lastname', 'emailaddress', 'industry'])
     #select_related("student_id").prefetch_related('student_id__auth_id').order_by("-start_date")

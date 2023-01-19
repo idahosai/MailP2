@@ -309,7 +309,7 @@ class Bulkimport(models.Model):
     filename = models.CharField(max_length=70)
     file = models.FileField(blank=True)
     staffid = models.ForeignKey(Staff, on_delete=models.CASCADE, null=True)
-
+    #i need to edit this to vp **********
    
   
 
@@ -327,8 +327,8 @@ class Bulkimport(models.Model):
 
 
 class AttachedAllManager(models.Manager):
-    def get_by_natural_key(self, id, dateofattachement, attachedtagid, attachedcustomfeildid, attachedformid, attachedgroupid, bulkimportid):
-        return self.get(id = id, dateofattachement=dateofattachement, attachedtagid = attachedtagid, attachedcustomfeildid= attachedcustomfeildid,attachedformid=attachedformid, attachedgroupid=attachedgroupid, bulkimportid=bulkimportid)
+    def get_by_natural_key(self, id, dateofattachement, attachedtagid, attachedcustomfeildid, attachedformid, attachedgroupid, bulkimportid, staffid):
+        return self.get(id = id, dateofattachement=dateofattachement, attachedtagid = attachedtagid, attachedcustomfeildid= attachedcustomfeildid,attachedformid=attachedformid, attachedgroupid=attachedgroupid, bulkimportid=bulkimportid, staffid=staffid)
 class AttachedAll(models.Model):
     id = models.AutoField(primary_key=True)
     dateofattachement = models.DateTimeField(null=True, blank=False)
@@ -337,15 +337,16 @@ class AttachedAll(models.Model):
     attachedformid = models.ForeignKey(AttachedForm, on_delete=models.CASCADE, null=True)
     attachedgroupid = models.ForeignKey(Attachedgroup, on_delete=models.CASCADE, null=True)
     bulkimportid = models.ForeignKey(Bulkimport, on_delete=models.CASCADE, null=True)
+    staffid = models.ForeignKey(Staff, on_delete=models.CASCADE, null=True)
     def __str__(self):
         return str(self.id)
     #This method should always return a natural key tuple 
     #Then, when you call serializers.serialize(), you provide use_natural_foreign_keys=True or use_natural_primary_keys=True arguments
     def natural_key(self):              #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate
         #made this dictionary return whitch will add to the previous dictionary
-        return {'id':self.id,'dateofattachement':self.dateofattachement, 'attachedtagid':self.attachedtagid, 'attachedcustomfeildid': self.attachedcustomfeildid, 'attachedformid':self.attachedformid, 'attachedgroupid':self.attachedgroupid, 'bulkimportid':self.bulkimportid}
-    natural_key.dependencies = ['pages.Attachedtag', 'pages.Attachedcustomfeild', 'pages.AttachedForm', 'pages.Attachedgroup', 'pages.Bulkimport']
-
+        return {'id':self.id,'dateofattachement':self.dateofattachement, 'attachedtagid':self.attachedtagid, 'attachedcustomfeildid': self.attachedcustomfeildid, 'attachedformid':self.attachedformid, 'attachedgroupid':self.attachedgroupid, 'bulkimportid':self.bulkimportid, 'staffid':self.staffid}
+    natural_key.dependencies = ['pages.Attachedtag', 'pages.Attachedcustomfeild', 'pages.AttachedForm', 'pages.Attachedgroup', 'pages.Bulkimport', 'pages.Staff']
+#i need to edit this to vp **********
 
 
 
