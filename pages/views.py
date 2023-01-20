@@ -1,4 +1,5 @@
 import datetime
+import json
 import re
 from django.conf import settings
 from django.shortcuts import render, redirect
@@ -188,7 +189,8 @@ def checksigninapi(request):
             objectQuerySettag = Staff.objects.filter(username = username)
             #print(objectQuerySettag)
             dataB = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=['id','userid', 'username', 'firstname','lastname','emailaddress','industry'])
-            print(dataB)
+            #print(list(dataB))
+            json_object = json.loads(dataB)
             print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
             response = {
             'istrue': "true",
@@ -196,7 +198,7 @@ def checksigninapi(request):
             }
 
             #return JsonResponse(response)
-            return JsonResponse(dataB,safe=False)
+            return JsonResponse(json_object,safe=False)
         else:
             #messages.error(request, "Bad Credentials!") 
             #return redirect('signin')
