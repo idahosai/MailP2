@@ -195,7 +195,8 @@ def checksigninapi(request):
             'Staff': dataB
             }
 
-            return JsonResponse(response)
+            #return JsonResponse(response)
+            return JsonResponse(dataB,safe=False)
         else:
             #messages.error(request, "Bad Credentials!") 
             #return redirect('signin')
@@ -204,13 +205,17 @@ def checksigninapi(request):
             'Staff': "is null"
 
             }
-            return JsonResponse(response)
+            dataB=[]
+            #return JsonResponse(response)
+            return JsonResponse(dataB,safe=False)
 
     response = {
             'istrue': "unknown",
             'Staff': "is null"
             }
-    return JsonResponse(response)
+    dataB=[]
+    #return JsonResponse(response)
+    return JsonResponse(dataB,safe=False)
     #return render(request, 'pages/signin.html')
 
 def signout(request):
