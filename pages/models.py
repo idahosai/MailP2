@@ -58,7 +58,7 @@ class Contact(models.Model):
     totalreviewsleft = models.CharField(max_length=70)
     lastemailratingdone = models.CharField(max_length=70)
 
-    staffid = models.ForeignKey(Staff, on_delete=models.CASCADE, null=True)
+    #staffid = models.ForeignKey(Staff, on_delete=models.CASCADE, null=True)
     #bulkimportid = models.ForeignKey(Bulkimport, on_delete=models.CASCADE, null=True)
 
 

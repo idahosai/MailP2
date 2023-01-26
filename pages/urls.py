@@ -25,5 +25,6 @@ urlpatterns = [
     path('importsubscribers_load_table',views.importsubscribers_load_table, name='importsubscribers_load_table'),
     path('matchtotable', views.matchtotable, name="matchtotable"),
     path('checksigninapi/',views.checksigninapi, name="checksigninapi/"),
+    path('savecontactapi/',views.savecontactapi, name="savecontactapi/"),
     
  ]

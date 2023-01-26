@@ -15,7 +15,7 @@ from django.utils.encoding import force_bytes, force_text
 from . tokens import generate_token
 
 
-from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag
+from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag, Contact
 #from pages import settings
 from django.core import serializers
 
@@ -219,6 +219,155 @@ def checksigninapi(request):
     #return JsonResponse(response)
     return JsonResponse(dataB,safe=False)
     #return render(request, 'pages/signin.html')
+
+
+
+class ContactApi(object):
+    def __init__(self, yo, do):
+        self.yo = yo
+        self.do = do
+
+    def user_decoder(obj):
+        return ContactApi(obj['yo'], obj['do'])
+
+
+
+#@api_view(['POST'])
+def savecontactapi(request):
+    if request.method == 'POST':
+        
+
+        #arrCustomfeilds = request.POST.getlist('arrCustomfeilds[]')
+        #print("arrcustomfeild is " + arrCustomfeilds)
+
+        datejoined = request.POST['datejoined']
+        notes = request.POST['notes']
+        emailaddress= request.POST['emailaddress']
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        jobtitle = request.POST['jobtitle']
+        company = request.POST['company']
+        mobilephone = request.POST['mobilephone']
+        workphone = request.POST['workphone']
+        country = request.POST['country']
+        stateprovince = request.POST['stateprovince']
+        city = request.POST['city']
+        address = request.POST['address']
+        zip = request.POST['zip']
+        website = request.POST['website']
+        addmethod = request.POST['addmethod']
+        
+
+    
+        #for i in arrCustomfeilds:
+        #    print("arrcustomfeild inside is " + i)
+
+        #for i in range(len(arrCustomfeilds)):
+        #    print("arrcustomfeild inside is " + arrCustomfeilds[i])
+
+
+
+        contactuser = Contact.objects.create(
+            datejoined = datejoined,
+            notes = notes,
+            emailaddress= emailaddress,
+            firstname = firstname,
+            lastname = lastname,
+            jobtitle = jobtitle,
+            company = company,
+            mobilephone = mobilephone,
+            workphone = workphone,
+            country = country,
+            stateprovince = stateprovince,
+            city = city,
+            address = address,
+            zip = zip,
+            website = website,
+            addmethod = addmethod)
+        contactuser.save()
+
+        #make sure that username is unique for all who log in to the system
+        objectQuerySettag = Contact.objects.filter(id = contactuser.id)
+        #print(objectQuerySettag)
+        dataB = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=[
+        'id',
+        'status',
+        'lifetimevalue', 
+        'datejoined', 
+        'notes',
+        'emailaddress',
+        'firstname',
+        'lastname',
+        'jobtitle',
+        'company',
+        'mobilephone',
+        'workphone',
+        'country',
+        'stateprovince',
+        'city',
+        'address',
+        'zip',
+        'website',
+        'stopmethod',
+        'confirmquestionmark',
+        'addmethod',
+        'signupsource',
+        'totalreviewsleft',
+        'lastemailratingdone'
+        ])
+        #print(list(dataB))
+        json_object = json.loads(dataB)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        
+
+        #return JsonResponse(response)
+        return JsonResponse(json_object,safe=False)
+
+
+    else:
+        '''
+        arrCustomfeilds = request.GET.getlist('arrCustomfeilds')
+        
+        print("arrcustomfeild is " + arrCustomfeilds)
+
+        datejoined = request.GET['datejoined']
+        notes = request.GET['notes']
+        emailaddress= request.GET['emailaddress']
+        firstname = request.GET['firstname']
+        lastname = request.GET['lastname']
+        jobtitle = request.GET['jobtitle']
+        company = request.GET['company']
+        mobilephone = request.GET['mobilephone']
+        workphone = request.GET['workphone']
+        country = request.GET['country']
+        stateprovince = request.GET['stateprovince']
+        city = request.GET['city']
+        address = request.GET['address']
+        zip = request.GET['zip']
+        website = request.GET['website']
+        addmethod = request.GET['addmethod']
+
+        '''
+        #firstname = request.GET['firstname']
+        #lastname = request.GET['lastname']
+        #arrCustomfeilds = request.GET.getlist('arrCustomfeilds')
+
+        #for i in arrCustomfeilds:
+        #    print("arrcustomfeild inside is " + i)
+
+        
+        #dataB=[firstname, lastname, arrCustomfeilds]
+        dataB=[]
+        #return JsonResponse(response)
+        return JsonResponse(dataB,safe=False)
+     
+            
+
+
+
+
+
+
 
 def signout(request):
     auth.logout(request)
