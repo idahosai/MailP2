@@ -26,6 +26,7 @@ from django.core.files.storage import default_storage
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 def index(request):
     return render(request, 'pages/index.html')
@@ -258,7 +259,7 @@ class ContactApi(APIView):
         return Response(json_object,safe=False)
         #return Response
 
-    def post(obj):
+    def post(self, request):
         datejoined = request.data['datejoined']
         notes = request.data['notes']
         emailaddress= request.data['emailaddress']
@@ -335,32 +336,8 @@ class ContactApi(APIView):
 
 
 
-#@api_view(['POST'])
+"""
 def savecontactapi(request):
-    #if request.method == 'POST':
-        
-
-    #arrCustomfeilds = request.POST.getlist('arrCustomfeilds[]')
-    #print("arrcustomfeild is " + arrCustomfeilds)
-
-    '''
-    datejoined = request.POST['datejoined']
-    notes = request.POST['notes']
-    emailaddress= request.POST['emailaddress']
-    firstname = request.POST['firstname']
-    lastname = request.POST['lastname']
-    jobtitle = request.POST['jobtitle']
-    company = request.POST['company']
-    mobilephone = request.POST['mobilephone']
-    workphone = request.POST['workphone']
-    country = request.POST['country']
-    stateprovince = request.POST['stateprovince']
-    city = request.POST['city']
-    address = request.POST['address']
-    zip = request.POST['zip']
-    website = request.POST['website']
-    addmethod = request.POST['addmethod']
-    '''
     datejoined = request.data['datejoined']
     notes = request.data['notes']
     emailaddress= request.data['emailaddress']
@@ -377,15 +354,6 @@ def savecontactapi(request):
     zip = request.data['zip']
     website = request.data['website']
     addmethod = request.data['addmethod']
-
-
-    #for i in arrCustomfeilds:
-    #    print("arrcustomfeild inside is " + i)
-
-    #for i in range(len(arrCustomfeilds)):
-    #    print("arrcustomfeild inside is " + arrCustomfeilds[i])
-
-
 
     contactuser = Contact.objects.create(
         datejoined = datejoined,
@@ -435,54 +403,147 @@ def savecontactapi(request):
     'totalreviewsleft',
     'lastemailratingdone'
     ])
-    #print(list(dataB))
     json_object = json.loads(dataB)
     print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
     
 
-    #return JsonResponse(response)
     return JsonResponse(json_object,safe=False)
+"""
 
 
-    #else:
+
+#@api_view(['POST'])
+@csrf_exempt
+def savecontactapi(request):
+    if request.method == 'POST':
+    #arrCustomfeilds = request.POST.getlist('arrCustomfeilds[]')
+    #print("arrcustomfeild is " + arrCustomfeilds)
+        datejoined = request.POST['datejoined']
+        notes = request.POST['notes']
+        emailaddress= request.POST['emailaddress']
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        jobtitle = request.POST['jobtitle']
+        company = request.POST['company']
+        mobilephone = request.POST['mobilephone']
+        workphone = request.POST['workphone']
+        country = request.POST['country']
+        stateprovince = request.POST['stateprovince']
+        city = request.POST['city']
+        address = request.POST['address']
+        zip = request.POST['zip']
+        website = request.POST['website']
+        addmethod = request.POST['addmethod']
+    #for i in arrCustomfeilds:
+    #    print("arrcustomfeild inside is " + i)
+    #for i in range(len(arrCustomfeilds)):
+    #    print("arrcustomfeild inside is " + arrCustomfeilds[i])
+        contactuser = Contact.objects.create(
+            datejoined = datejoined,
+            notes = notes,
+            emailaddress= emailaddress,
+            firstname = firstname,
+            lastname = lastname,
+            jobtitle = jobtitle,
+            company = company,
+            mobilephone = mobilephone,
+            workphone = workphone,
+            country = country,
+            stateprovince = stateprovince,
+            city = city,
+            address = address,
+            zip = zip,
+            website = website,
+            addmethod = addmethod)
+        contactuser.save()
+
+        #make sure that username is unique for all who log in to the system
+        objectQuerySettag = Contact.objects.filter(id = contactuser.id)
+        #print(objectQuerySettag)
+        dataB = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=[
+        'id',
+        'status',
+        'lifetimevalue', 
+        'datejoined', 
+        'notes',
+        'emailaddress',
+        'firstname',
+        'lastname',
+        'jobtitle',
+        'company',
+        'mobilephone',
+        'workphone',
+        'country',
+        'stateprovince',
+        'city',
+        'address',
+        'zip',
+        'website',
+        'stopmethod',
+        'confirmquestionmark',
+        'addmethod',
+        'signupsource',
+        'totalreviewsleft',
+        'lastemailratingdone'
+        ])
+        #print(list(dataB))
+        json_object = json.loads(dataB)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        #return JsonResponse(response)
+        return JsonResponse(json_object,safe=False)
 
 
-    '''
-    arrCustomfeilds = request.GET.getlist('arrCustomfeilds')
-    
-    print("arrcustomfeild is " + arrCustomfeilds)
-
-    datejoined = request.GET['datejoined']
-    notes = request.GET['notes']
-    emailaddress= request.GET['emailaddress']
-    firstname = request.GET['firstname']
-    lastname = request.GET['lastname']
-    jobtitle = request.GET['jobtitle']
-    company = request.GET['company']
-    mobilephone = request.GET['mobilephone']
-    workphone = request.GET['workphone']
-    country = request.GET['country']
-    stateprovince = request.GET['stateprovince']
-    city = request.GET['city']
-    address = request.GET['address']
-    zip = request.GET['zip']
-    website = request.GET['website']
-    addmethod = request.GET['addmethod']
-
-    '''
+    else:
+        #arrCustomfeilds = request.GET.getlist('arrCustomfeilds')
+        #print("arrcustomfeild is " + arrCustomfeilds)
+        datejoined = request.GET['datejoined']
+        notes = request.GET['notes']
+        emailaddress= request.GET['emailaddress']
+        firstname = request.GET['firstname']
+        lastname = request.GET['lastname']
+        jobtitle = request.GET['jobtitle']
+        company = request.GET['company']
+        mobilephone = request.GET['mobilephone']
+        workphone = request.GET['workphone']
+        country = request.GET['country']
+        stateprovince = request.GET['stateprovince']
+        city = request.GET['city']
+        address = request.GET['address']
+        zip = request.GET['zip']
+        website = request.GET['website']
+        addmethod = request.GET['addmethod']
     #firstname = request.GET['firstname']
     #lastname = request.GET['lastname']
     #arrCustomfeilds = request.GET.getlist('arrCustomfeilds')
-
     #for i in arrCustomfeilds:
     #    print("arrcustomfeild inside is " + i)
 
-    
     #dataB=[firstname, lastname, arrCustomfeilds]
-#    dataB=[]
+        dataB=[datejoined]
     #return JsonResponse(response)
-#    return JsonResponse(dataB,safe=False)
-     
+        """
+        contactuser = Contact.objects.create(
+            datejoined = datejoined,
+            notes = notes,
+            emailaddress= emailaddress,
+            firstname = firstname,
+            lastname = lastname,
+            jobtitle = jobtitle,
+            company = company,
+            mobilephone = mobilephone,
+            workphone = workphone,
+            country = country,
+            stateprovince = stateprovince,
+            city = city,
+            address = address,
+            zip = zip,
+            website = website,
+            addmethod = addmethod)
+        contactuser.save()
+        """
+        
+        return JsonResponse(dataB,safe=False)
+
             
 
 
