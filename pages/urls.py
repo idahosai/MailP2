@@ -26,5 +26,6 @@ urlpatterns = [
     path('matchtotable', views.matchtotable, name="matchtotable"),
     path('checksigninapi/',views.checksigninapi, name="checksigninapi/"),
     path('savecontactapi/',views.savecontactapi, name="savecontactapi/"),
+    path('contactapi/',views.ContactApi.as_view(),name="contactapi/"),
     
  ]

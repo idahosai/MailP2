@@ -75,7 +75,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "pages",
-    'rest_framework',
+    "rest_framework",
     #"pages.apps.PagesConfig",
     #'schedule',
     #'djangobower',
