@@ -6,7 +6,7 @@ class StaffManager(models.Manager):
         return self.get(id = id, userid=userid, username=username, firstname=firstname, lastname=lastname, emailaddress=emailaddress, industry=industry)
 
 class Staff(models.Model):
-    id = models.IntegerField(default=1, primary_key=True)
+    id = models.AutoField(primary_key=True)
     userid = models.IntegerField()
     username = models.CharField(max_length=70)
     firstname = models.CharField(max_length=70)
@@ -33,7 +33,7 @@ class ContactManager(models.Manager):
     def get_by_natural_key(self, id, status, lifetimevalue, datejoined, notes, emailaddress, firstname, lastname, jobtitle, company, mobilephone, workphone, country, stateprovince, city, address, zip, website, stopmethod, confirmquestionmark, addmethod, signupsource, totalreviewsleft, lastemailratingdone, staffid):
         return self.get(id = id, status=status, lifetimevalue = lifetimevalue, datejoined= datejoined,notes=notes, emailaddress=emailaddress, firstname=firstname, lastname =lastname, jobtitle=jobtitle, company=company, mobilephone = mobilephone, workphone=workphone, country=country, stateprovince=stateprovince, city=city, address=address, zip=zip, website=website, stopmethod=stopmethod, confirmquestionmark=confirmquestionmark, addmethod=addmethod, signupsource=signupsource, totalreviewsleft=totalreviewsleft, lastemailratingdone=lastemailratingdone, staffid=staffid)
 class Contact(models.Model):
-    id = models.IntegerField(default=1, primary_key=True)
+    id = models.AutoField(primary_key=True)
     status = models.CharField(max_length=70)
     lifetimevalue = models.DecimalField(max_digits=5, decimal_places=2)
     datejoined = models.DateTimeField(null=True, blank=False)

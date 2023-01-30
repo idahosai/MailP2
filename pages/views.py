@@ -27,6 +27,15 @@ from django.core.files.storage import default_storage
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
+
+
+from django.shortcuts import render
+from rest_framework import generics
+#from rest_framework.views import APIView
+#from rest_framework.response import Response
+from .serializers import CreateContactSerializer
+
+
 # Create your views here.
 def index(request):
     return render(request, 'pages/index.html')
@@ -222,6 +231,92 @@ def checksigninapi(request):
     return JsonResponse(dataB,safe=False)
     #return render(request, 'pages/signin.html')
 
+
+class CreateContactView(APIView):
+    serializer_class = CreateContactSerializer
+
+    def post(self, request, format=None):
+        #if not self.request.session.exists(self.request.session.session_key):
+        #    self.request.session.create()
+
+
+        datejoined = request.data['datejoined']
+        notes = request.data['notes']
+        emailaddress= request.data['emailaddress']
+        firstname = request.data['firstname']
+        lastname = request.data['lastname']
+        jobtitle = request.data['jobtitle']
+        company = request.data['company']
+        mobilephone = request.data['mobilephone']
+        workphone = request.data['workphone']
+        country = request.data['country']
+        stateprovince = request.data['stateprovince']
+        city = request.data['city']
+        address = request.data['address']
+        zip = request.data['zip']
+        website = request.data['website']
+        addmethod = request.data['addmethod']
+
+
+
+        contactuser = Contact.objects.create(
+            lifetimevalue = 0,
+            datejoined = datejoined,
+            notes = notes,
+            emailaddress= emailaddress,
+            firstname = firstname,
+            lastname = lastname,
+            jobtitle = jobtitle,
+            company = company,
+            mobilephone = mobilephone,
+            workphone = workphone,
+            country = country,
+            stateprovince = stateprovince,
+            city = city,
+            address = address,
+            zip = zip,
+            website = website,
+            addmethod = addmethod)
+        contactuser.save()
+
+            #make sure that username is unique for all who log in to the system
+        objectQuerySettag = Contact.objects.filter(id = contactuser.id)
+        #print(objectQuerySettag)
+        dataB = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=[
+        'id',
+        'status',
+        'lifetimevalue', 
+        'datejoined', 
+        'notes',
+        'emailaddress',
+        'firstname',
+        'lastname',
+        'jobtitle',
+        'company',
+        'mobilephone',
+        'workphone',
+        'country',
+        'stateprovince',
+        'city',
+        'address',
+        'zip',
+        'website',
+        'stopmethod',
+        'confirmquestionmark',
+        'addmethod',
+        'signupsource',
+        'totalreviewsleft',
+        'lastemailratingdone'
+        ])
+        #print(list(dataB))
+        json_object = json.loads(dataB)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        
+
+        #return JsonResponse(response)
+        return Response(json_object)
+
+            
 
 
 class ContactApi(APIView):
