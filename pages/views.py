@@ -233,7 +233,9 @@ def checksigninapi(request):
     #return render(request, 'pages/signin.html')
 
 #class CreateContactView(APIView):
-class CreateContactView(viewsets.ModelViewSet):
+#class CreateContactView(viewsets.ModelViewSet):
+@csrf_exempt
+class CreateContactView(generics.ListCreateAPIView):
     serializer_class = CreateContactSerializer
     queryset = Contact.objects.all()
 
