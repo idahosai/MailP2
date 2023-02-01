@@ -35,6 +35,7 @@ from rest_framework import generics
 #from rest_framework.response import Response
 from .serializers import CreateContactSerializer
 
+from rest_framework import viewsets
 
 # Create your views here.
 def index(request):
@@ -231,9 +232,12 @@ def checksigninapi(request):
     return JsonResponse(dataB,safe=False)
     #return render(request, 'pages/signin.html')
 
-
-class CreateContactView(APIView):
+#class CreateContactView(APIView):
+class CreateContactView(viewsets.ModelViewSet):
     serializer_class = CreateContactSerializer
+    queryset = Contact.objects.all()
+
+    
 
     def post(self, request, format=None):
         #if not self.request.session.exists(self.request.session.session_key):
