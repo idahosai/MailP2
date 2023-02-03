@@ -293,7 +293,7 @@ class CreateContactView(generics.ListCreateAPIView):
             #make sure that username is unique for all who log in to the system
         objectQuerySettag = Contact.objects.filter(id = contactuser.id)
         #print(objectQuerySettag)
-        dataB = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=True, fields=[
+        dataB = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=[
         'id',
         'status',
         'lifetimevalue', 
@@ -320,6 +320,7 @@ class CreateContactView(generics.ListCreateAPIView):
         'lastemailratingdone'
         ])
         #print(list(dataB))
+        #print(dataB)
         json_object = json.loads(dataB)
         print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
         
