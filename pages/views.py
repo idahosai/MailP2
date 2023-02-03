@@ -36,6 +36,10 @@ from rest_framework import generics
 from .serializers import CreateContactSerializer
 
 from rest_framework import viewsets
+from rest_framework.renderers import TemplateHTMLRenderer
+
+from rest_framework.decorators import api_view
+
 
 # Create your views here.
 def index(request):
@@ -234,18 +238,19 @@ def checksigninapi(request):
 
 #class CreateContactView(APIView):
 #class CreateContactView(viewsets.ModelViewSet):
-@csrf_exempt
+#@csrf_exempt
+#generics.ListCreateAPIView is the one that works it seems
 class CreateContactView(generics.ListCreateAPIView):
     serializer_class = CreateContactSerializer
     queryset = Contact.objects.all()
+    #renderer_classes = [TemplateHTMLRenderer]
+    #template_name = 'contacts/contacts.html'
 
     
-
-    def post(self, request, format=None):
+    #@api_view(['POST'])
+    def post(self, request, pk=None):
         #if not self.request.session.exists(self.request.session.session_key):
         #    self.request.session.create()
-
-
         datejoined = request.data['datejoined']
         notes = request.data['notes']
         emailaddress= request.data['emailaddress']
@@ -288,7 +293,7 @@ class CreateContactView(generics.ListCreateAPIView):
             #make sure that username is unique for all who log in to the system
         objectQuerySettag = Contact.objects.filter(id = contactuser.id)
         #print(objectQuerySettag)
-        dataB = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=[
+        dataB = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=True, fields=[
         'id',
         'status',
         'lifetimevalue', 

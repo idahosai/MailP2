@@ -60,7 +60,13 @@ class Contact(models.Model):
 
     #staffid = models.ForeignKey(Staff, on_delete=models.CASCADE, null=True)
     #bulkimportid = models.ForeignKey(Bulkimport, on_delete=models.CASCADE, null=True)
-
+            #metadata is “anything that’s not a field
+            #this not being here caused errors with api
+    class Meta:                   #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate 
+        #this is what is actually group in the serialized object's feild column for the specific feild foreighn key attribute
+        #Sets of field names that, taken together, must be unique:
+        #unique_together can be a single list when dealing with a single set of fields:
+        unique_together = ['id','status','lifetimevalue', 'datejoined', 'notes', 'emailaddress', 'firstname', 'lastname', 'jobtitle', 'company' , 'mobilephone', 'workphone', 'country', 'stateprovince', 'city', 'address', 'zip', 'website', 'stopmethod', 'confirmquestionmark', 'addmethod', 'signupsource', 'totalreviewsleft', 'lastemailratingdone']
 
     def __str__(self):
         return self.id
@@ -68,7 +74,7 @@ class Contact(models.Model):
     #Then, when you call serializers.serialize(), you provide use_natural_foreign_keys=True or use_natural_primary_keys=True arguments
     def natural_key(self):              #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate
         #made this dictionary return whitch will add to the previous dictionary
-        return {'id':self.id,'status': self.status,'lifetimevalue':self.lifetimevalue, 'datejoined':self.datejoined, 'notes': self.notes, 'emailaddress': self.emailaddress, 'firstname':self.firstname, 'lastname': self.lastname, 'jobtitle':self.jobtitle, 'company': self.company , 'mobilephone': self.mobilephone, 'workphone':self.workphone, 'country':self.country, 'stateprovince': self.stateprovince, 'city':self.city, 'address':self.address, 'zip': self.zip, 'website':self.website, 'stopmethod': self.stopmethod, 'confirmquestionmark': self.confirmquestionmark, 'addmethod':self.addmethod, 'signupsource': self.signupsource, 'totalreviewsleft': self.totalreviewsleft, 'lastemailratingdone':self.lastemailratingdone, 'staffid':self.staffid}
+        return {'id':self.id,'status': self.status,'lifetimevalue':self.lifetimevalue, 'datejoined':self.datejoined, 'notes': self.notes, 'emailaddress': self.emailaddress, 'firstname':self.firstname, 'lastname': self.lastname, 'jobtitle':self.jobtitle, 'company': self.company , 'mobilephone': self.mobilephone, 'workphone':self.workphone, 'country':self.country, 'stateprovince': self.stateprovince, 'city':self.city, 'address':self.address, 'zip': self.zip, 'website':self.website, 'stopmethod': self.stopmethod, 'confirmquestionmark': self.confirmquestionmark, 'addmethod':self.addmethod, 'signupsource': self.signupsource, 'totalreviewsleft': self.totalreviewsleft, 'lastemailratingdone':self.lastemailratingdone}
     natural_key.dependencies = ['pages.Staff']
     #natural_key.dependencies = ['pages.Staff', 'pages.Bulkimport']
 
