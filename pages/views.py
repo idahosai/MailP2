@@ -15,7 +15,7 @@ from django.utils.encoding import force_bytes, force_text
 from . tokens import generate_token
 
 
-from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag, Contact
+from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag, Contact, Customfeild, Attachedcustomfeild
 #from pages import settings
 from django.core import serializers
 
@@ -33,7 +33,7 @@ from django.shortcuts import render
 from rest_framework import generics
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
-from .serializers import CreateContactSerializer
+from .serializers import CreateContactSerializer, CreateCustomfeildSerializer
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -328,7 +328,99 @@ class CreateContactView(generics.ListCreateAPIView):
         #return JsonResponse(response)
         return Response(json_object)
 
-            
+
+
+class CreateCustomfeildView(generics.ListCreateAPIView):
+    serializer_class = CreateCustomfeildSerializer
+    queryset = Customfeild.objects.all()
+    #renderer_classes = [TemplateHTMLRenderer]
+    #template_name = 'contacts/contacts.html'
+
+    
+    #@api_view(['POST'])
+    def post(self, request, pk=None):
+        #if not self.request.session.exists(self.request.session.session_key):
+        #    self.request.session.create()
+        contactpk = request.data['contactpk']
+
+        name = request.data['name']
+        customfeildintvalue = request.data['customfeildintvalue']
+        customfeildstringvalue = request.data['customfeildstringvalue']
+        dateofcreation = request.data['dateofcreation']
+        lastcustomfeildupdate = request.data['lastcustomfeildupdate']
+
+        staffpk= request.data['staffpk']
+
+       
+
+
+
+        customfeilduser = Customfeild.objects.create(
+            name = name,
+            customfeildintvalue = customfeildintvalue,
+            customfeildstringvalue = customfeildstringvalue,
+            dateofcreation = dateofcreation,
+            lastcustomfeildupdate = lastcustomfeildupdate)
+        customfeilduser.save()
+
+
+        contactuser = Contact.objects.get(id = contactpk)
+
+        attachedcustomfeilduser = Attachedcustomfeild.objects.create(
+            dateofattachement = datetime.datetime.now(),
+            contactid = contactuser,
+            customfeildid = customfeilduser
+        )
+        attachedcustomfeilduser.save()
+
+        staffuser = Staff.objects.get(id = staffpk)
+
+        attachedAlluser = AttachedAll.objects.create(
+            dateofattachement = datetime.datetime.now(),
+            attachedcustomfeildid = attachedcustomfeilduser,
+            staffid = staffuser
+        )
+        attachedAlluser.save()
+
+
+            #make sure that username is unique for all who log in to the system
+        objectQuerySettag = Contact.objects.filter(id = contactpk)
+        #print(objectQuerySettag)
+        dataB = serializers.serialize("json", objectQuerySettag, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=[
+        'id',
+        'status',
+        'lifetimevalue', 
+        'datejoined', 
+        'notes',
+        'emailaddress',
+        'firstname',
+        'lastname',
+        'jobtitle',
+        'company',
+        'mobilephone',
+        'workphone',
+        'country',
+        'stateprovince',
+        'city',
+        'address',
+        'zip',
+        'website',
+        'stopmethod',
+        'confirmquestionmark',
+        'addmethod',
+        'signupsource',
+        'totalreviewsleft',
+        'lastemailratingdone'
+        ])
+        #print(list(dataB))
+        #print(dataB)
+        json_object = json.loads(dataB)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        
+
+        #return JsonResponse(response)
+        return Response(json_object)
+    
 
 
 class ContactApi(APIView):

@@ -27,7 +27,8 @@ urlpatterns = [
     path('checksigninapi/',views.checksigninapi, name="checksigninapi/"),
     path('savecontactapi/',views.savecontactapi, name="savecontactapi/"),
     path('contactapi/',views.ContactApi.as_view(),name="contactapi/"),
-    path('CreateContactView/',views.CreateContactView.as_view(),name="CreateContactView/")
+    path('CreateContactView/',views.CreateContactView.as_view(),name="CreateContactView/"),
+    path('CreateCustomfeildView/',views.CreateCustomfeildView.as_view(),name="CreateCustomfeildView/")
     #path('post/',views.post,name="post/")
     
  ]
