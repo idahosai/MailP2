@@ -357,7 +357,7 @@ class CreateCustomfeildView(generics.ListCreateAPIView):
 
         customfeilduser = Customfeild.objects.create(
             name = name,
-            customfeildintvalue = customfeildintvalue,
+            customfeildintvalue = (int)(customfeildintvalue),
             customfeildstringvalue = customfeildstringvalue,
             dateofcreation = dateofcreation,
             lastcustomfeildupdate = lastcustomfeildupdate)
