@@ -7,7 +7,7 @@ class StaffManager(models.Manager):
 
 class Staff(models.Model):
     id = models.AutoField(primary_key=True)
-    userid = models.IntegerField()
+    userid = models.IntegerField(blank=True,null=True)
     username = models.CharField(max_length=70)
     firstname = models.CharField(max_length=70)
     lastname = models.CharField(max_length=70)
@@ -146,7 +146,7 @@ class CustomfeildManager(models.Manager):
 class Customfeild(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=70)
-    customfeildintvalue =  models.IntegerField()
+    customfeildintvalue =  models.IntegerField(blank=True,null=True)
     customfeildstringvalue = models.CharField(max_length=70)
     dateofcreation = models.DateTimeField(null=True, blank=False)
     lastcustomfeildupdate = models.DateTimeField(null=True, blank=False)
