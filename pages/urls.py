@@ -28,7 +28,11 @@ urlpatterns = [
     path('savecontactapi/',views.savecontactapi, name="savecontactapi/"),
     path('contactapi/',views.ContactApi.as_view(),name="contactapi/"),
     path('CreateContactView/',views.CreateContactView.as_view(),name="CreateContactView/"),
-    path('CreateCustomfeildView/',views.CreateCustomfeildView.as_view(),name="CreateCustomfeildView/")
+    path('CreateCustomfeildView/',views.CreateCustomfeildView.as_view(),name="CreateCustomfeildView/"),
+
+    path('CreateCustomfeild2View/',views.CreateCustomfeild2View.as_view(),name='CreateCustomfeild2View/'),
+    path('CreateContact2View/',views.CreateContact2View.as_view(),name='CreateContact2View/'),
+    path('CreateSegmentView/',views.CreateSegmentView.as_view(),name='CreateSegmentView/')
     #path('post/',views.post,name="post/")
     
  ]

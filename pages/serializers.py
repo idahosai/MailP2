@@ -1,7 +1,7 @@
 
 
 from rest_framework import serializers
-from .models import Contact, Customfeild
+from .models import Contact, Customfeild, Segment
 
 class CreateContactSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,4 +38,64 @@ class CreateCustomfeildSerializer(serializers.ModelSerializer):
         'dateofcreation',
         'lastcustomfeildupdate',
         'staffpk'
+        )
+
+    
+class CreateCustomfeild2Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customfeild
+        fields = (
+        'id',
+        'name',
+        'customfeildintvalue',
+        'customfeildstringvalue',
+        'dateofcreation',
+        'lastcustomfeildupdate',
+        )
+
+
+class CreateContact2Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = (
+        'id',
+        'status',
+        'lifetimevalue',
+
+        'datejoined',
+        'notes',
+        'emailaddress',
+        'firstname',
+        'lastname',
+        'jobtitle',
+        'company',
+        'mobilephone',
+        'workphone',
+        'country',
+        'stateprovince',
+        'city',
+        'address',
+        'zip',
+        'website',
+
+        'stopmethod',
+        'confirmquestionmark',
+        'addmethod',
+        'signupsource',
+        'totalreviewsleft',
+        'lastemailratingdone'
+        )
+
+
+
+class CreateSegmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Segment
+        #what the get will display
+        fields = (
+        'id',
+        'name',
+        'dateone',
+        'datetwo',
+        'dateofcreation'
         )

@@ -15,7 +15,7 @@ from django.utils.encoding import force_bytes, force_text
 from . tokens import generate_token
 
 
-from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag, Contact, Customfeild, Attachedcustomfeild
+from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag, Contact, Customfeild, Attachedcustomfeild, Segment, Attachedsegment
 #from pages import settings
 from django.core import serializers
 
@@ -33,7 +33,7 @@ from django.shortcuts import render
 from rest_framework import generics
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
-from .serializers import CreateContactSerializer, CreateCustomfeildSerializer
+from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -421,6 +421,128 @@ class CreateCustomfeildView(generics.ListCreateAPIView):
         #return JsonResponse(response)
         return Response(json_object)
     
+
+#newwwwwwwwwwwwwwwwwwwwwwww 11111111111111111
+class CreateCustomfeild2View(generics.ListCreateAPIView):
+    serializer_class = CreateCustomfeild2Serializer
+    queryset = Customfeild.objects.all()
+    #renderer_classes = [TemplateHTMLRenderer]
+    #template_name = 'contacts/contacts.html'
+
+    
+    #@api_view(['POST'])
+    def get(self, request, *args, **kwargs):
+        #if not self.request.session.exists(self.request.session.session_key):
+        #    self.request.session.create()
+
+        #id = request.data['id']
+        #name = request.data['name']
+        #customfeildintvalue = request.data['customfeildintvalue']
+        #customfeildstringvalue = request.data['customfeildstringvalue']
+        #dateofcreation = request.data['dateofcreation']
+        #lastcustomfeildupdate = request.data['lastcustomfeildupdate']
+
+        #g = Customfeild.objects.all()
+
+        queryset = Customfeild.objects.all()
+        serializer = CreateCustomfeild2Serializer(queryset,many=True)
+        #print(serializer.data)
+        #print(list(dataB))
+        #print(dataB)
+        #json_object = json.loads(dataB)
+        return Response(serializer.data)
+
+#newwwwwwwwwwwwwwwwwwwwwwwwww 22222222222222222
+class CreateContact2View(generics.ListCreateAPIView):
+    serializer_class = CreateContact2Serializer
+    queryset = Contact.objects.all()
+    #renderer_classes = [TemplateHTMLRenderer]
+    #template_name = 'contacts/contacts.html'
+
+    
+    #@api_view(['POST'])
+    def get(self, request, *args, **kwargs):
+        #if not self.request.session.exists(self.request.session.session_key):
+        #    self.request.session.create()
+
+        #id = request.data['id']
+        #name = request.data['name']
+        #customfeildintvalue = request.data['customfeildintvalue']
+        #customfeildstringvalue = request.data['customfeildstringvalue']
+        #dateofcreation = request.data['dateofcreation']
+        #lastcustomfeildupdate = request.data['lastcustomfeildupdate']
+
+        #g = Customfeild.objects.all()
+
+        queryset = Contact.objects.all()
+        serializer = CreateContact2Serializer(queryset,many=True)
+        #print(serializer.data)
+        #print(list(dataB))
+        #print(dataB)
+        #json_object = json.loads(dataB)
+        return Response(serializer.data)
+
+
+class CreateSegmentView(generics.ListCreateAPIView):
+    serializer_class = CreateSegmentSerializer
+    queryset = Segment.objects.all()
+    #renderer_classes = [TemplateHTMLRenderer]
+    #template_name = 'contacts/contacts.html'
+
+    
+    #@api_view(['POST'])
+    def get(self, request, *args, **kwargs):
+        #if not self.request.session.exists(self.request.session.session_key):
+        #    self.request.session.create()
+        #id = request.data['id']
+        #name = request.data['name']
+        #customfeildintvalue = request.data['customfeildintvalue']
+        #customfeildstringvalue = request.data['customfeildstringvalue']
+        #dateofcreation = request.data['dateofcreation']
+        #lastcustomfeildupdate = request.data['lastcustomfeildupdate']
+        #g = Customfeild.objects.all()
+        queryset = Segment.objects.all()
+        serializer = CreateSegmentSerializer(queryset,many=True)
+        #print(serializer.data)
+        #print(list(dataB))
+        #print(dataB)
+        #json_object = json.loads(dataB)
+        return Response(serializer.data)
+
+
+    def post(self, request, pk=None):
+        #if not self.request.session.exists(self.request.session.session_key):
+        #    self.request.session.create()
+        
+
+        name = request.data['name']
+        dateone = request.data['dateone']
+        datetwo = request.data['datetwo']
+        dateofcreation = request.data['dateofcreation']
+
+        segmentuser = Segment.objects.create(
+            name = name,
+            dateone = dateone,
+            datetwo = datetwo,
+            dateofcreation = dateofcreation)
+        segmentuser.save()
+
+        #contactuser = Contact.objects.get(id = contactpk)
+
+        attachedsegmentuser = Attachedsegment.objects.create(
+            dateofattachement = datetime.datetime.now(),
+            segmentid = segmentuser
+        )
+        attachedsegmentuser.save()
+
+        queryset = Segment.objects.filter(id = segmentuser.id)
+        serializer = CreateSegmentSerializer(queryset,many=True)
+        print(serializer.data)
+        #print(list(dataB))
+        #print(dataB)
+        #json_object = json.loads(dataB)
+        return Response(serializer.data)
+
 
 
 class ContactApi(APIView):
