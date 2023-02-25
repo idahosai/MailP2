@@ -490,8 +490,15 @@ class CreateContact2View(generics.ListCreateAPIView):
         dateofcreation = request.data['dateofcreation']
         lastcustomfeildupdate = request.data['lastcustomfeildupdate']
 
-        queryset = Customfeild.objects.filter(id=id).update(name = name, customfeildstringvalue= customfeildstringvalue, dateofcreation=dateofcreation, lastcustomfeildupdate = lastcustomfeildupdate)
-        serializer = CreateSegmentSerializer(queryset,many=True)
+        queryset = Customfeild.objects.get(id=id)
+        queryset.name = name
+        queryset.customfeildstringvalue= customfeildstringvalue
+        queryset.dateofcreation=dateofcreation
+        queryset.lastcustomfeildupdate = lastcustomfeildupdate
+        queryset.save()
+
+        queryset2 = Customfeild.objects.filter(id=id)
+        serializer = CreateSegmentSerializer(queryset2,many=True)
         print(serializer.data)
         #print(list(dataB))
         #print(dataB)
