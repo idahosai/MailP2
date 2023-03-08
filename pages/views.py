@@ -567,6 +567,25 @@ class CreateSegmentView(generics.ListCreateAPIView):
         return Response(serializer.data)
 
 
+class CreateContact3View(generics.ListCreateAPIView):
+    serializer_class = CreateContact2Serializer
+    queryset = Contact.objects.all()
+    #renderer_classes = [TemplateHTMLRenderer]
+    #template_name = 'contacts/contacts.html'
+
+    def post(self, request):
+        date1 = request.data['date1']
+        date2 = request.data['date2']
+
+        queryset2 = Contact.objects.filter(datejoined__gte=date1, datejoined__lte=date2)
+        serializer = CreateContact2Serializer(queryset2,many=True)
+        print(serializer.data)
+        #print(list(dataB))
+        #print(dataB)
+        #json_object = json.loads(dataB)
+        return Response(serializer.data)
+
+
 
 class ContactApi(APIView):
     def get(self, request):
