@@ -99,3 +99,12 @@ class CreateSegmentSerializer(serializers.ModelSerializer):
         'datetwo',
         'dateofcreation'
         )
+
+
+
+class CreateContactEmailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = (
+        'emailaddress'
+        )

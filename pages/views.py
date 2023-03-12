@@ -33,7 +33,7 @@ from django.shortcuts import render
 from rest_framework import generics
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
-from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer
+from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -579,6 +579,27 @@ class CreateContact3View(generics.ListCreateAPIView):
 
         queryset2 = Contact.objects.filter(datejoined__gte=date1, datejoined__lte=date2)
         serializer = CreateContact2Serializer(queryset2,many=True)
+        print(serializer.data)
+        #print(list(dataB))
+        #print(dataB)
+        #json_object = json.loads(dataB)
+        return Response(serializer.data)
+
+
+class CreateSegmentIdToContactView(generics.ListCreateAPIView):
+    serializer_class = CreateContactEmailSerializer
+    queryset = Contact.objects.all()
+    #renderer_classes = [TemplateHTMLRenderer]
+    #template_name = 'contacts/contacts.html'
+
+    def post(self, request):
+        id = request.data['id']
+        
+        queryset = Segment.objects.get(id = id)
+        
+
+        queryset2 = Contact.objects.filter(datejoined__gte=queryset.dateone, datejoined__lte=queryset.datetwo)
+        serializer = CreateContactEmailSerializer(queryset2,many=True)
         print(serializer.data)
         #print(list(dataB))
         #print(dataB)
