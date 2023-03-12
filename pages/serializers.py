@@ -106,5 +106,30 @@ class CreateContactEmailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = (
-        'emailaddress'
+        'id',
+        'status',
+        'lifetimevalue',
+
+        'datejoined',
+        'notes',
+        'emailaddress',
+        'firstname',
+        'lastname',
+        'jobtitle',
+        'company',
+        'mobilephone',
+        'workphone',
+        'country',
+        'stateprovince',
+        'city',
+        'address',
+        'zip',
+        'website',
+
+        'stopmethod',
+        'confirmquestionmark',
+        'addmethod',
+        'signupsource',
+        'totalreviewsleft',
+        'lastemailratingdone'
         )
