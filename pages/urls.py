@@ -35,8 +35,9 @@ urlpatterns = [
     path('CreateSegmentView/',views.CreateSegmentView.as_view(),name='CreateSegmentView/'),
     path('CreateContact3View/',views.CreateContact3View.as_view(),name='CreateContact3View/'),
 
-    path('CreateSegmentIdToContactView/',views.CreateSegmentIdToContactView.as_view(),name='CreateSegmentIdToContactView/')
+    path('CreateSegmentIdToContactView/',views.CreateSegmentIdToContactView.as_view(),name='CreateSegmentIdToContactView/'),
 
     #path('post/',views.post,name="post/")
+    path('playtemplate', views.playtemplate, name="playtemplate")
     
  ]

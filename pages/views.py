@@ -42,6 +42,9 @@ from rest_framework.decorators import api_view
 
 
 # Create your views here.
+def playtemplate(request):
+    return render(request, 'pages/playtemplate.html')
+
 def index(request):
     return render(request, 'pages/index.html')
     """
