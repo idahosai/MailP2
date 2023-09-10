@@ -33,20 +33,27 @@
 	</div>   
 
 	<!--remove the bottom link to stop affecting your already established bootstrap-->>
+	<!--
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-	
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	-->
 	<!-- include summernote css/js -->
-	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+	<!--
 	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
 
 
 	
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!--above added by iggy to make top nav bar stay put-->>
+-->
+	<!--above added by iggy to make top nav bar stay put-->>
 
+
+	<!-- include joinit css/js -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jodit/3.4.14/jodit.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/jodit/3.4.14/jodit.js"></script>
 
 
 
@@ -81,6 +88,7 @@
 	<label>Click Tracking</label>
 	<input type="checkbox" id="emailClickGoogleAnalytics" name="clickgoogleanalytics" value="clickGoogleAnalyticsT">
 	<label>Track Click Using Google Analytics</label>
+	<button style="float: right;" onclick="saveEmailPageOne(this)">Save<button></button>
 
 
 
@@ -90,19 +98,59 @@
 	<button style="float: right;background-color: red" onclick="removePopup2(this)">X</button>
 
 	<h1>Design Email</h1>
+	<!--
 	<form method="post" >
 	<textarea id="emailtextarea" >
 	 </textarea>
 	</form>
+-->
+	<textarea id="emailtextarea" ></textarea>
 	
 	<img src="static/img/copy and past in html editor.PNG" alt="Girl in a jacket" width="500" height="300">
+	<button style="float: right;" onclick="saveEmailPageTwo(this)">Save<button>
 
 </div>
 
 <script>
+	function saveEmailPageOne(element){
+		//alert("hi");
+		//alert(element.parentNode.getAttribute("data-idholder"));
+
+		document.getElementById(element.parentNode.getAttribute("data-idholder")).setAttribute('data-broadcastname',""+document.getElementById("emailNameOfBroadcast").value+"");
+		
+		document.getElementById(element.parentNode.getAttribute("data-idholder")).setAttribute('data-whoemailfrom',""+document.getElementById("emailWhoItFrom").value+"");
+		
+		document.getElementById(element.parentNode.getAttribute("data-idholder")).setAttribute('data-emailsubjectline',""+document.getElementById("emailSubjectLine").value+"");
+		
+		document.getElementById(element.parentNode.getAttribute("data-idholder")).setAttribute('data-checkboxopentracking',""+document.getElementById("emailOpenTracking").checked+"");
+		
+		document.getElementById(element.parentNode.getAttribute("data-idholder")).setAttribute('data-checkboxclicktracking',""+document.getElementById("emailClickTracking").checked+"");
+
+		document.getElementById(element.parentNode.getAttribute("data-idholder")).setAttribute('data-checkboxgoogleanalyticstracking',""+document.getElementById("emailClickGoogleAnalytics").checked+"");
+
+		
+		
+
+		//alert(document.getElementById(element.parentNode.getAttribute("data-idholder")).getAttribute('data-checkboxgoogleanalyticstracking'));
+	}
+</script>
+
+<script>
+	function saveEmailPageTwo(element){
+		//alert(element.parentNode.getAttribute("data-idholder"));
+
+		document.getElementById(element.parentNode.getAttribute("data-idholder")).setAttribute('data-emailcontent',""+document.getElementById("emailtextarea").value+"");
+		//alert(document.getElementById("emailtextarea").value);
+		alert(document.getElementById(element.parentNode.getAttribute("data-idholder")).getAttribute('data-emailcontent'));
+
+	}
+</script>
+
+<script>
 	
- 	$('#emailtextarea').summernote();
-	
+ 	//$('#emailtextarea').summernote();
+
+	const editor = Jodit.make("#emailtextarea");
 
 </script>
 
@@ -114,7 +162,9 @@
 		//document.getElementById("emailContainer").style.display = "block";
 		document.getElementById("myuseEmail").style.display = "block";
 		//document.getElementById("myuseEmail").style.display = "none";
-		document.getElementById("myuseEmail").data('data-idholder',""+element.parentNode.id+"");
+		//alert(element.parentNode.parentNode.id);
+		document.getElementById("myuseEmail").setAttribute('data-idholder',""+element.parentNode.parentNode.id+"");
+		//alert(document.getElementById("myuseEmail").getAttribute('data-idholder'));
 	}
 </script>
 
@@ -123,7 +173,7 @@
 
 		document.getElementById("myuseEmail").style.display = "none";
 		document.getElementById("myuseEmail2").style.display = "block";
-		document.getElementById("myuseEmail2").data('data-idholder', document.getElementById("myuseEmail").data('data-idholder'))
+		document.getElementById("myuseEmail2").setAttribute('data-idholder', document.getElementById("myuseEmail").getAttribute('data-idholder'))
 		//document.getElementById("myuseEmail").data('data-idholder')
 	}
 </script>
@@ -133,12 +183,40 @@
 		//document.getElementById("emailContainer").style.display = "none";
 
 		document.getElementById("myuseEmail").style.display = "none";
+
+
+		document.getElementById("emailNameOfBroadcast").value = "";
+
+		document.getElementById("emailWhoItFrom").value = "";
+
+		document.getElementById("emailSubjectLine").value = "";
+
+		document.getElementById("emailOpenTracking").checked = false;
+
+		document.getElementById("emailClickTracking").checked = false;
+
+		document.getElementById("emailClickGoogleAnalytics").checked = false;
+		
+
+		
+		
 		
 	}
 </script>
 
 <script>
 	function removePopup2(element){
+
+		editor.value = "<p> </p>";
+		//document.getElementById("emailtextarea").value = "<p> </p>";
+		//document.getElementById("emailtextarea").innerHTML = "";
+		//document.getElementById("emailtextarea").innerText = "";
+		//document.getElementById("emailtextarea").textContent = "";
+		//$('#emailtextarea').summernote();
+		//$('#emailtextarea').summernote('pasteHTML',"<p>Hello</p>");
+		//$('#emailtextarea').summernote();
+		//alert(document.getElementById("emailtextarea").value);
+
 		document.getElementById("myuseEmail2").style.display = "none";
 		document.getElementById("myuseEmail").style.display = "block";
 	}
