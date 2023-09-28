@@ -15,7 +15,7 @@ from django.utils.encoding import force_bytes, force_text
 from . tokens import generate_token
 
 
-from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag, Contact, Customfeild, Attachedcustomfeild, Segment, Attachedsegment
+from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag, Contact, Customfeild, Attachedcustomfeild, Segment, Attachedsegment, JoinStaffContact, JoinStaffCustomfeild
 #from pages import settings
 from django.core import serializers
 
@@ -33,12 +33,13 @@ from django.shortcuts import render
 from rest_framework import generics
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
-from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer
+from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
 
 from rest_framework.decorators import api_view
+
 
 
 # Create your views here.
@@ -117,7 +118,9 @@ def registeraccount(request):
 
         #this is whats stopping my loging in from working
         #for now we will leave it uncommented
-        #myuser.is_active = False
+        myuser.is_active = False
+
+        myuser.is_staff = True
         myuser.save()
         staffuser = Staff.objects.create(userid=myuser.id ,username=username, firstname=fname, lastname=lname, emailaddress=email, industry=industry)
         staffuser.save()
@@ -271,7 +274,8 @@ class CreateContactView(generics.ListCreateAPIView):
         website = request.data['website']
         addmethod = request.data['addmethod']
 
-
+        #just added this today
+        staffpk= request.data['staffpk']
 
         contactuser = Contact.objects.create(
             lifetimevalue = 0,
@@ -292,6 +296,15 @@ class CreateContactView(generics.ListCreateAPIView):
             website = website,
             addmethod = addmethod)
         contactuser.save()
+        #i added this today
+        staffuser = Staff.objects.get(id = staffpk)
+        #i added this today
+        joinstaffcontactuser = JoinStaffContact.objects.create(
+            contactid = contactuser,
+            staffid = staffuser
+        )
+        joinstaffcontactuser.save()
+
 
             #make sure that username is unique for all who log in to the system
         objectQuerySettag = Contact.objects.filter(id = contactuser.id)
@@ -427,10 +440,12 @@ class CreateCustomfeildView(generics.ListCreateAPIView):
 
 #newwwwwwwwwwwwwwwwwwwwwwww 11111111111111111
 class CreateCustomfeild2View(generics.ListCreateAPIView):
-    serializer_class = CreateCustomfeild2Serializer
-    queryset = Customfeild.objects.all()
-    #renderer_classes = [TemplateHTMLRenderer]
-    #template_name = 'contacts/contacts.html'
+    #serializer_class = CreateCustomfeild2Serializer
+    #queryset = Customfeild.objects.all()
+
+    serializer_class = JoinStaffCustomfeildSerializer
+    queryset = JoinStaffCustomfeild.objects.all()
+    
 
     
     #@api_view(['POST'])
@@ -447,13 +462,42 @@ class CreateCustomfeild2View(generics.ListCreateAPIView):
 
         #g = Customfeild.objects.all()
 
-        queryset = Customfeild.objects.all()
-        serializer = CreateCustomfeild2Serializer(queryset,many=True)
-        #print(serializer.data)
+        
+
+        staffpk = request.GET.get('staffpk')
+
+        userstaff = Staff.objects.get(id = staffpk)
+
+        querysetsandcf = JoinStaffCustomfeild.objects.filter(staffid = userstaff).only('customfeildid__id','customfeildid__name','customfeildid__customfeildintvalue','customfeildid__customfeildstringvalue','customfeildid__dateofcreation','customfeildid__lastcustomfeildupdate')
+        #select_related("customfeildid").prefetch_related('customfeildid')
+        #print(querysetsandcf.values('customfeildid__id','customfeildid__name','customfeildid__customfeildintvalue','customfeildid__customfeildstringvalue','customfeildid__dateofcreation','customfeildid__lastcustomfeildupdate'))
+        #print(str(querysetsandcf))
+        #print(querysetsandcf)
+
+        dataB = serializers.serialize("json", querysetsandcf, use_natural_foreign_keys=True, use_natural_primary_keys=True, fields=[
+        'customfeildid',
+        ])
+        #'customfeildid__id',
+        #'customfeildid__name',
+        #'customfeildid__customfeildintvalue',
+        #'customfeildid__customfeildstringvalue',
+        #'customfeildid__dateofcreation',
+        #'customfeildid__lastcustomfeildupdate'
+        #print(dataB)
+        #print(json.dumps(dataB))
+
+        #queryset = Customfeild.objects.all()
+        #serializer = CreateCustomfeild2Serializer(querysetsandcf,many=True)
+        serializer2 = JoinStaffCustomfeildSerializer(querysetsandcf,many=True)
+
+        print("*******************")
+        print(serializer2.data)
         #print(list(dataB))
         #print(dataB)
         #json_object = json.loads(dataB)
-        return Response(serializer.data)
+        #return Response(serializer.data)
+        return Response(serializer2.data)
+        #JsonResponse(dataB,safe=False)
 
 #newwwwwwwwwwwwwwwwwwwwwwwwww 22222222222222222
 class CreateContact2View(generics.ListCreateAPIView):
