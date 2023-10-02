@@ -3,54 +3,6 @@ from django.db import models
 
 
 
-
-
-class SegmentManager(models.Manager):
-    def get_by_natural_key(self, id, name,dateone, datetwo, dateofcreation):
-        return self.get(id = id, name = name, dateone = dateone, datetwo = datetwo,dateofcreation=dateofcreation)
-class Segment(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=70)
-    dateone = models.DateTimeField(null=True, blank=False)
-    datetwo = models.DateTimeField(null=True, blank=False)
-    dateofcreation = models.DateTimeField(null=True, blank=False)
-    
-    def __str__(self):
-        return str(self.id)
-    #This method should always return a natural key tuple 
-    #Then, when you call serializers.serialize(), you provide use_natural_foreign_keys=True or use_natural_primary_keys=True arguments
-    def natural_key(self):              #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate
-        #made this dictionary return whitch will add to the previous dictionary
-        return {'id':self.id,'name': self.name,'dateone':self.dateone, 'datetwo':self.datetwo, 'dateofcreation': self.dateofcreation}
-    
-
-
-class AttachedsegmentManager(models.Manager):
-    def get_by_natural_key(self, id, dateofattachement, segmentid):
-        return self.get(id = id, dateofattachement=dateofattachement, segmentid=segmentid)
-class Attachedsegment(models.Model):
-    id = models.AutoField(primary_key=True)
-    dateofattachement = models.DateTimeField(null=True, blank=False)
-    segmentid = models.ForeignKey(Segment, on_delete=models.CASCADE, null=True)
-    def __str__(self):
-        return str(self.id)
-    #This method should always return a natural key tuple 
-    #Then, when you call serializers.serialize(), you provide use_natural_foreign_keys=True or use_natural_primary_keys=True arguments
-    def natural_key(self):              #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate
-        #made this dictionary return whitch will add to the previous dictionary
-        return {'id':self.id,'dateofattachement': self.dateofattachement, 'segmentid': self.segmentid}
-    #naturalkey has you app name then the Object
-    natural_key.dependencies = ['pages.Segment']
-
-
-
-
-
-
-
-
-
-
 class StaffManager(models.Manager):
     def get_by_natural_key(self, id, userid, username, firstname, lastname, emailaddress, industry):
         return self.get(id = id, userid=userid, username=username, firstname=firstname, lastname=lastname, emailaddress=emailaddress, industry=industry)
@@ -82,6 +34,56 @@ class Staff(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+
+class SegmentManager(models.Manager):
+    def get_by_natural_key(self, id, name,dateone, datetwo, dateofcreation):
+        return self.get(id = id, name = name, dateone = dateone, datetwo = datetwo,dateofcreation=dateofcreation)
+class Segment(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=70)
+    dateone = models.DateTimeField(null=True, blank=False)
+    datetwo = models.DateTimeField(null=True, blank=False)
+    dateofcreation = models.DateTimeField(null=True, blank=False)
+    
+    def __str__(self):
+        return str(self.id)
+    #This method should always return a natural key tuple 
+    #Then, when you call serializers.serialize(), you provide use_natural_foreign_keys=True or use_natural_primary_keys=True arguments
+    def natural_key(self):              #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate
+        #made this dictionary return whitch will add to the previous dictionary
+        return {'id':self.id,'name': self.name,'dateone':self.dateone, 'datetwo':self.datetwo, 'dateofcreation': self.dateofcreation}
+    
+
+
+class AttachedsegmentManager(models.Manager):
+    def get_by_natural_key(self, id, dateofattachement, segmentid, staffid):
+        return self.get(id = id, dateofattachement=dateofattachement, segmentid=segmentid, staffid = staffid)
+class Attachedsegment(models.Model):
+    id = models.AutoField(primary_key=True)
+    dateofattachement = models.DateTimeField(null=True, blank=False)
+    segmentid = models.ForeignKey(Segment, on_delete=models.CASCADE, null=True)
+    staffid = models.ForeignKey(Staff, on_delete=models.CASCADE, null=True)
+    def __str__(self):
+        return str(self.id)
+    #This method should always return a natural key tuple 
+    #Then, when you call serializers.serialize(), you provide use_natural_foreign_keys=True or use_natural_primary_keys=True arguments
+    def natural_key(self):              #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate
+        #made this dictionary return whitch will add to the previous dictionary
+        return {'id':self.id,'dateofattachement': self.dateofattachement, 'segmentid': self.segmentid, 'staffid': self.staffid}
+    #naturalkey has you app name then the Object
+    natural_key.dependencies = ['pages.Segment','pages.Staff']
+
+
+
+
+
+
+
+
+
+
 
 
 

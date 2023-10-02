@@ -33,7 +33,7 @@ from django.shortcuts import render
 from rest_framework import generics
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
-from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer
+from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -399,6 +399,13 @@ class CreateCustomfeildView(generics.ListCreateAPIView):
         attachedAlluser.save()
 
 
+        #i added this today
+        joinstaffcustomfeilduser = JoinStaffCustomfeild.objects.create(
+            customfeildid = customfeilduser,
+            staffid = staffuser
+        )
+        joinstaffcustomfeilduser.save()
+
             #make sure that username is unique for all who log in to the system
         objectQuerySettag = Contact.objects.filter(id = contactpk)
         #print(objectQuerySettag)
@@ -474,9 +481,10 @@ class CreateCustomfeild2View(generics.ListCreateAPIView):
         #print(str(querysetsandcf))
         #print(querysetsandcf)
 
-        dataB = serializers.serialize("json", querysetsandcf, use_natural_foreign_keys=True, use_natural_primary_keys=True, fields=[
-        'customfeildid',
-        ])
+        #dataB = serializers.serialize("json", querysetsandcf, use_natural_foreign_keys=True, use_natural_primary_keys=False, fields=[
+        #'customfeildid',
+        #])
+        
         #'customfeildid__id',
         #'customfeildid__name',
         #'customfeildid__customfeildintvalue',
@@ -501,8 +509,8 @@ class CreateCustomfeild2View(generics.ListCreateAPIView):
 
 #newwwwwwwwwwwwwwwwwwwwwwwwww 22222222222222222
 class CreateContact2View(generics.ListCreateAPIView):
-    serializer_class = CreateContact2Serializer
-    queryset = Contact.objects.all()
+    serializer_class = JoinStaffContactSerializer
+    queryset = JoinStaffContact.objects.all()
     #renderer_classes = [TemplateHTMLRenderer]
     #template_name = 'contacts/contacts.html'
 
@@ -520,14 +528,22 @@ class CreateContact2View(generics.ListCreateAPIView):
         #lastcustomfeildupdate = request.data['lastcustomfeildupdate']
 
         #g = Customfeild.objects.all()
+        #this is new from today
+        staffpk = request.GET.get('staffpk')
+        staffuser = Staff.objects.get(id=staffpk)
+        staffuser.save()
+        queryset2 = JoinStaffContact.objects.filter(staffid = staffuser)
+        serializer2 = JoinStaffContactSerializer(queryset2,many=True)
 
-        queryset = Contact.objects.all()
-        serializer = CreateContact2Serializer(queryset,many=True)
+        #queryset = Contact.objects.all()
+        #serializer = CreateContact2Serializer(queryset,many=True)
+        
+        
         #print(serializer.data)
         #print(list(dataB))
         #print(dataB)
         #json_object = json.loads(dataB)
-        return Response(serializer.data)
+        return Response(serializer2.data)
 
 
     def post(self, request):
@@ -580,7 +596,7 @@ class CreateSegmentView(generics.ListCreateAPIView):
         return Response(serializer.data)
 
 
-    def post(self, request, pk=None):
+    def post(self, request, *args, **kwargs):
         #if not self.request.session.exists(self.request.session.session_key):
         #    self.request.session.create()
         
@@ -589,6 +605,78 @@ class CreateSegmentView(generics.ListCreateAPIView):
         dateone = request.data['dateone']
         datetwo = request.data['datetwo']
         dateofcreation = request.data['dateofcreation']
+        staffpk = request.data['staffpk']
+
+
+        segmentuser = Segment.objects.create(
+            name = str(staffpk),
+            dateone = dateone,
+            datetwo = datetwo,
+            dateofcreation = dateofcreation)
+        segmentuser.save()
+
+        #contactuser = Contact.objects.get(id = contactpk)
+    
+
+        staffuser = Staff.objects.get(id=staffpk)
+        #just added this to test if its cus of this
+        staffuser.save()
+        attachedsegmentuser = Attachedsegment.objects.create(
+            dateofattachement = datetime.datetime.now(),
+            segmentid = segmentuser,
+            staffid = staffuser
+        )
+        attachedsegmentuser.save()
+
+        queryset2 = Segment.objects.filter(id = segmentuser.id)
+        serializer2 = CreateSegmentSerializer(queryset2,many=True)
+        print(serializer2.data)
+        #print(list(dataB))
+        #print(dataB)
+        #json_object = json.loads(dataB)
+        return Response(serializer2.data)
+
+
+
+
+class CreateSegmentView2(generics.ListCreateAPIView):
+    serializer_class = CreateSegmentSerializer
+    queryset = Segment.objects.all()
+    #renderer_classes = [TemplateHTMLRenderer]
+    #template_name = 'contacts/contacts.html'
+
+    
+    #@api_view(['POST'])
+    def get(self, request, *args, **kwargs):
+        #if not self.request.session.exists(self.request.session.session_key):
+        #    self.request.session.create()
+        #id = request.data['id']
+        #name = request.data['name']
+        #customfeildintvalue = request.data['customfeildintvalue']
+        #customfeildstringvalue = request.data['customfeildstringvalue']
+        #dateofcreation = request.data['dateofcreation']
+        #lastcustomfeildupdate = request.data['lastcustomfeildupdate']
+        #g = Customfeild.objects.all()
+        queryset = Segment.objects.all()
+        serializer = CreateSegmentSerializer(queryset,many=True)
+        #print(serializer.data)
+        #print(list(dataB))
+        #print(dataB)
+        #json_object = json.loads(dataB)
+        return Response(serializer.data)
+
+
+    def post(self, request, *args, **kwargs):
+        #if not self.request.session.exists(self.request.session.session_key):
+        #    self.request.session.create()
+        
+
+        name = request.data['name']
+        dateone = request.data['dateone']
+        datetwo = request.data['datetwo']
+        dateofcreation = request.data['dateofcreation']
+        staffpk = request.data.get('staffpk')
+
 
         segmentuser = Segment.objects.create(
             name = name,
@@ -598,39 +686,58 @@ class CreateSegmentView(generics.ListCreateAPIView):
         segmentuser.save()
 
         #contactuser = Contact.objects.get(id = contactpk)
+    
 
+        staffuser = Staff.objects.get(id=staffpk)
+        #just added this to test if its cus of this
+        staffuser.save()
         attachedsegmentuser = Attachedsegment.objects.create(
             dateofattachement = datetime.datetime.now(),
-            segmentid = segmentuser
+            segmentid = segmentuser,
+            staffid = staffuser
         )
         attachedsegmentuser.save()
 
-        queryset = Segment.objects.filter(id = segmentuser.id)
-        serializer = CreateSegmentSerializer(queryset,many=True)
-        print(serializer.data)
+        queryset2 = Segment.objects.filter(id = segmentuser.id)
+        serializer2 = CreateSegmentSerializer(queryset2,many=True)
+        print(serializer2.data)
         #print(list(dataB))
         #print(dataB)
         #json_object = json.loads(dataB)
-        return Response(serializer.data)
+        return Response(serializer2.data)
+
+
+
+
 
 
 class CreateContact3View(generics.ListCreateAPIView):
-    serializer_class = CreateContact2Serializer
-    queryset = Contact.objects.all()
+    serializer_class = JoinStaffContactSerializer
+    queryset = JoinStaffContact.objects.all()
     #renderer_classes = [TemplateHTMLRenderer]
     #template_name = 'contacts/contacts.html'
 
-    def post(self, request):
-        date1 = request.data['date1']
-        date2 = request.data['date2']
+    #wronge datatype, its supposed to be get
+    def get(self, request, *args, **kwargs):
+        #date1 = request.data['date1']
+        date1 = request.GET.get('date1')
+        #date2 = request.data['date2']
+        date2 = request.GET.get('date2')
+        #i just added this today
+        #staffpk = request.data['staffpk']
+        staffpk = request.GET.get('staffpk')
 
-        queryset2 = Contact.objects.filter(datejoined__gte=date1, datejoined__lte=date2)
-        serializer = CreateContact2Serializer(queryset2,many=True)
-        print(serializer.data)
+        staffuser = Staff.objects.get(id=staffpk)
+        
+        queryset2 = JoinStaffContact.objects.filter(contactid__datejoined__gte=date1, contactid__datejoined__lte=date2, staffid = staffuser)
+        serializer2 = JoinStaffContactSerializer(queryset2,many=True)
+        #queryset2 = Contact.objects.filter(datejoined__gte=date1, datejoined__lte=date2)
+        #serializer = CreateContact2Serializer(queryset2,many=True)
+        print(serializer2.data)
         #print(list(dataB))
         #print(dataB)
         #json_object = json.loads(dataB)
-        return Response(serializer.data)
+        return Response(serializer2.data)
 
 
 class CreateSegmentIdToContactView(generics.ListCreateAPIView):
