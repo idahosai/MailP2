@@ -596,7 +596,7 @@ class CreateSegmentView(generics.ListCreateAPIView):
         return Response(serializer.data)
 
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         #if not self.request.session.exists(self.request.session.session_key):
         #    self.request.session.create()
         
@@ -606,76 +606,6 @@ class CreateSegmentView(generics.ListCreateAPIView):
         datetwo = request.data['datetwo']
         dateofcreation = request.data['dateofcreation']
         staffpk = request.data['staffpk']
-
-
-        segmentuser = Segment.objects.create(
-            name = str(staffpk),
-            dateone = dateone,
-            datetwo = datetwo,
-            dateofcreation = dateofcreation)
-        segmentuser.save()
-
-        #contactuser = Contact.objects.get(id = contactpk)
-    
-
-        staffuser = Staff.objects.get(id=staffpk)
-        #just added this to test if its cus of this
-        staffuser.save()
-        attachedsegmentuser = Attachedsegment.objects.create(
-            dateofattachement = datetime.datetime.now(),
-            segmentid = segmentuser,
-            staffid = staffuser
-        )
-        attachedsegmentuser.save()
-
-        queryset2 = Segment.objects.filter(id = segmentuser.id)
-        serializer2 = CreateSegmentSerializer(queryset2,many=True)
-        print(serializer2.data)
-        #print(list(dataB))
-        #print(dataB)
-        #json_object = json.loads(dataB)
-        return Response(serializer2.data)
-
-
-
-
-class CreateSegmentView2(generics.ListCreateAPIView):
-    serializer_class = CreateSegmentSerializer
-    queryset = Segment.objects.all()
-    #renderer_classes = [TemplateHTMLRenderer]
-    #template_name = 'contacts/contacts.html'
-
-    
-    #@api_view(['POST'])
-    def get(self, request, *args, **kwargs):
-        #if not self.request.session.exists(self.request.session.session_key):
-        #    self.request.session.create()
-        #id = request.data['id']
-        #name = request.data['name']
-        #customfeildintvalue = request.data['customfeildintvalue']
-        #customfeildstringvalue = request.data['customfeildstringvalue']
-        #dateofcreation = request.data['dateofcreation']
-        #lastcustomfeildupdate = request.data['lastcustomfeildupdate']
-        #g = Customfeild.objects.all()
-        queryset = Segment.objects.all()
-        serializer = CreateSegmentSerializer(queryset,many=True)
-        #print(serializer.data)
-        #print(list(dataB))
-        #print(dataB)
-        #json_object = json.loads(dataB)
-        return Response(serializer.data)
-
-
-    def post(self, request, *args, **kwargs):
-        #if not self.request.session.exists(self.request.session.session_key):
-        #    self.request.session.create()
-        
-
-        name = request.data['name']
-        dateone = request.data['dateone']
-        datetwo = request.data['datetwo']
-        dateofcreation = request.data['dateofcreation']
-        staffpk = request.data.get('staffpk')
 
 
         segmentuser = Segment.objects.create(
@@ -705,6 +635,7 @@ class CreateSegmentView2(generics.ListCreateAPIView):
         #print(dataB)
         #json_object = json.loads(dataB)
         return Response(serializer2.data)
+
 
 
 

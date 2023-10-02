@@ -234,7 +234,7 @@ class CreateContact2Serializer(serializers.ModelSerializer):
 
 
 class CreateSegmentSerializer(serializers.ModelSerializer):
-    staffpk = serializers.IntegerField(required=False)
+    staffpk = serializers.CharField(required=False)
     class Meta:
         model = Segment
         #what the get will display

@@ -33,7 +33,6 @@ urlpatterns = [
     path('CreateCustomfeild2View/',views.CreateCustomfeild2View.as_view(),name='CreateCustomfeild2View/'),
     path('CreateContact2View/',views.CreateContact2View.as_view(),name='CreateContact2View/'),
     path('CreateSegmentView/',views.CreateSegmentView.as_view(),name='CreateSegmentView/'),
-    path('CreateSegmentView2/',views.CreateSegmentView2.as_view(),name='CreateSegmentView2/'),
 
     path('CreateContact3View/',views.CreateContact3View.as_view(),name='CreateContact3View/'),
 
