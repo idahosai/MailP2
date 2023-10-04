@@ -1,7 +1,7 @@
 
 
 from rest_framework import serializers
-from .models import Contact, Customfeild, Segment, Staff, JoinStaffCustomfeild, JoinStaffContact
+from .models import Contact, Customfeild, Segment, Staff, JoinStaffCustomfeild, JoinStaffContact, Attachedsegment
 
 from django.contrib.auth.models import User
 
@@ -237,6 +237,28 @@ class CreateSegmentSerializer(serializers.ModelSerializer):
     staffpk = serializers.CharField(required=False)
     class Meta:
         model = Segment
+        #what the get will display
+        fields = (
+        'id',
+        'name',
+        'dateone',
+        'datetwo',
+        'dateofcreation',
+        'staffpk'
+        )
+
+
+
+class AttachedsegmentSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(source='segmentid.id', read_only=True)
+    name = serializers.CharField(source='segmentid.name', read_only=True)
+    dateone = serializers.DateTimeField(source='segmentid.dateone', read_only=True)
+    datetwo = serializers.DateTimeField(source='segmentid.datetwo', read_only=True)
+    dateofcreation = serializers.DateTimeField(source='segmentid.dateofcreation', read_only=True)
+    
+    staffpk = serializers.CharField(required=False)
+    class Meta:
+        model = Attachedsegment
         #what the get will display
         fields = (
         'id',

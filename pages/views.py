@@ -33,7 +33,7 @@ from django.shortcuts import render
 from rest_framework import generics
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
-from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer
+from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -587,13 +587,22 @@ class CreateSegmentView(generics.ListCreateAPIView):
         #dateofcreation = request.data['dateofcreation']
         #lastcustomfeildupdate = request.data['lastcustomfeildupdate']
         #g = Customfeild.objects.all()
-        queryset = Segment.objects.all()
-        serializer = CreateSegmentSerializer(queryset,many=True)
+        staffpk = request.GET.get('staffpk')
+
+        staffuser = Staff.objects.get(id=staffpk)
+        
+        queryset2 = Attachedsegment.objects.filter(staffid = staffuser)
+        serializer2 = AttachedsegmentSerializer(queryset2,many=True)
+
+        #queryset = Segment.objects.all()
+        #serializer = CreateSegmentSerializer(queryset,many=True)
+        
+        
         #print(serializer.data)
         #print(list(dataB))
         #print(dataB)
         #json_object = json.loads(dataB)
-        return Response(serializer.data)
+        return Response(serializer2.data)
 
 
     def post(self, request):
