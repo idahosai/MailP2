@@ -33,7 +33,7 @@ from django.shortcuts import render
 from rest_framework import generics
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
-from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer
+from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer, GetIsRegisteredEmailApisSerializer, Staff2Serializer
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -98,7 +98,7 @@ def registeraccount(request):
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email Already Registered!!")
             return redirect('index')
-        
+    
         if len(username)>20:
             messages.error(request, "Username must be under 20 charcters!!")
             return redirect('index')
@@ -344,6 +344,107 @@ class CreateContactView(generics.ListCreateAPIView):
         #return JsonResponse(response)
         return Response(json_object)
 
+
+
+class GetIsRegisteredEmailApis(generics.ListCreateAPIView):
+    serializer_class = GetIsRegisteredEmailApisSerializer
+    queryset = Contact.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        
+        emailaddress = request.GET.get('emailaddress')
+
+        #objects.get doesn't return empty result but filter does
+        usercontact = Contact.objects.filter(emailaddress = emailaddress)
+
+        if usercontact:
+            serializer2 = GetIsRegisteredEmailApisSerializer(usercontact,many=True)
+
+            print("*******************")
+            print(serializer2.data)
+       
+            return Response(serializer2.data)
+        
+        else:
+            response = {
+            }
+            dataB=[]
+            return Response(dataB)
+           
+        
+        
+
+
+class CreateRegisterAccountApis(generics.ListCreateAPIView):
+    serializer_class = Staff2Serializer
+    queryset = Staff.objects.all()
+
+    def post(self, request, pk=None):
+        username = request.data['username']
+        firstname = request.data['firstname']
+        lastname = request.data['lastname']
+        emailaddress = request.data['emailaddress']
+        password = request.data['password']
+        industry = request.data['industry']
+
+        myuser = User.objects.create_user(username, emailaddress, password)
+        myuser.first_name = firstname
+        myuser.last_name = lastname
+
+        #this is whats stopping my loging in from working
+        #for now we will leave it uncommented
+        myuser.is_active = False
+
+        myuser.is_staff = True
+        myuser.save()
+        staffuser = Staff.objects.create(userid=myuser.id ,username=username, firstname=firstname, lastname=lastname, emailaddress=emailaddress, industry=industry)
+        staffuser.save()
+
+        #messages.success(request, "Your Account has been successfully created.")
+        
+        # Welcome Email
+        subject = "Welcome to Mail Pinyata Login!!"
+        message = "Hello " + myuser.first_name + "!! \n" + "Welcome to Mail Pinyata!! \nThank you for visiting our website\n. We have also sent you a confirmation email, please confirm your email address. \n\nThanking You\n"        
+        from_email = settings.EMAIL_HOST_USER
+        to_list = [myuser.email]
+        send_mail(subject, message, from_email, to_list, fail_silently=True)
+        
+        
+        # Email Address Confirmation Email
+        current_site = get_current_site(request)
+        email_subject = "Confirm your Email @ Mail Pinyata Login!!"
+        message2 = render_to_string('email_confirmation.html',{
+            
+            'name': myuser.first_name,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
+            'token': generate_token.make_token(myuser)
+        })
+        email = EmailMessage(
+        email_subject,
+        message2,
+        settings.EMAIL_HOST_USER,
+        [myuser.email],
+        )
+        email.fail_silently = True
+        email.send()
+        
+
+
+        userstaff2 = Staff.objects.get(id = staffuser.id)
+
+        #querysetsandcf = JoinStaffCustomfeild.objects.filter(staffid = userstaff).only('customfeildid__id','customfeildid__name','customfeildid__customfeildintvalue','customfeildid__customfeildstringvalue','customfeildid__dateofcreation','customfeildid__lastcustomfeildupdate')
+       
+   
+        serializer2 = Staff2Serializer(userstaff2,many=False)
+
+        print("*******************")
+        print(serializer2.data)
+       
+        return Response(serializer2.data)
+    
+        
+        
 
 
 class CreateCustomfeildView(generics.ListCreateAPIView):

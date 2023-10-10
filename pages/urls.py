@@ -38,6 +38,9 @@ urlpatterns = [
 
     path('CreateSegmentIdToContactView/',views.CreateSegmentIdToContactView.as_view(),name='CreateSegmentIdToContactView/'),
 
+    path('GetIsRegisteredEmailApis/',views.GetIsRegisteredEmailApis.as_view(),name='GetIsRegisteredEmailApis/'),
+    path('CreateRegisterAccountApis/',views.CreateRegisterAccountApis.as_view(),name='CreateRegisterAccountApis/'),
+
     #path('post/',views.post,name="post/")
     path('playtemplate', views.playtemplate, name="playtemplate")
     

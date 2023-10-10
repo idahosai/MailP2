@@ -5,6 +5,36 @@ from .models import Contact, Customfeild, Segment, Staff, JoinStaffCustomfeild, 
 
 from django.contrib.auth.models import User
 
+
+
+
+class GetIsRegisteredEmailApisSerializer(serializers.ModelSerializer):
+    #put in a "," if it's just 1 feild to allow it
+    class Meta:
+        model = Contact
+        fields = (
+            'emailaddress',
+        )
+
+
+class Staff2Serializer(serializers.ModelSerializer):
+    #these are the post the show up below in the screen
+    #it doesn't send the password on send
+    password = serializers.CharField(required=False)
+    class Meta:
+        model = Staff
+        fields = (
+            'userid',
+            'username',
+            'firstname',
+            'lastname',
+            'emailaddress',
+            'password',
+            'industry'       
+            )
+
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
