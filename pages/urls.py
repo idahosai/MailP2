@@ -40,6 +40,7 @@ urlpatterns = [
 
     path('GetIsRegisteredEmailApis/',views.GetIsRegisteredEmailApis.as_view(),name='GetIsRegisteredEmailApis/'),
     path('CreateRegisterAccountApis/',views.CreateRegisterAccountApis.as_view(),name='CreateRegisterAccountApis/'),
+    path('GetRecoverPasswordApis/',views.GetRecoverPasswordApis.as_view(),name='GetRecoverPasswordApis/'),
 
     #path('post/',views.post,name="post/")
     path('playtemplate', views.playtemplate, name="playtemplate")

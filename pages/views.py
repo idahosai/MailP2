@@ -446,6 +446,57 @@ class CreateRegisterAccountApis(generics.ListCreateAPIView):
         
         
 
+class GetRecoverPasswordApis(generics.ListCreateAPIView):
+    serializer_class = Staff2Serializer
+    queryset = Staff.objects.all()
+
+    def get(self, request, *args, **kwargs):
+
+        user_email = request.GET.get('emailaddress')
+        
+        associated_user = User.objects.filter(email=user_email).first()
+
+        
+
+        if associated_user:
+            current_site = get_current_site(request)
+            email_subject = "Password Reset request"
+            #the file which will hold the message being sent
+            message2 = render_to_string('templateactivateaccount.html',{
+            
+            'name': associated_user.first_name,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(associated_user.pk)),
+            'token': generate_token.make_token(associated_user)
+            })
+            email = EmailMessage(
+            email_subject,
+            message2,
+            settings.EMAIL_HOST_USER,
+            [associated_user.email],
+            )
+            email.fail_silently = True
+
+            email.send()
+
+            userstaff2 = Staff.objects.get(emailaddress = user_email)
+            serializer2 = Staff2Serializer(userstaff2,many=False)
+
+            print("*******************")
+            print(serializer2.data)
+        
+            return Response(serializer2.data)
+
+
+    
+
+
+    
+
+
+
+
+
 
 class CreateCustomfeildView(generics.ListCreateAPIView):
     serializer_class = CreateCustomfeildSerializer
