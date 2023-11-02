@@ -33,6 +33,21 @@ class Staff2Serializer(serializers.ModelSerializer):
             'industry'       
             )
 
+class Staff3Serializer(serializers.ModelSerializer):
+    #these are the post the show up below in the screen
+    #it doesn't send the password on send
+    id = serializers.CharField(required=False)
+    class Meta:
+        model = Staff
+        fields = (
+            'userid',
+            'username',
+            'firstname',
+            'lastname',
+            'emailaddress',
+            'id',
+            'industry'       
+            )
 
 
 class UserSerializer(serializers.ModelSerializer):

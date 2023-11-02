@@ -33,7 +33,7 @@ from django.shortcuts import render
 from rest_framework import generics
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
-from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer, GetIsRegisteredEmailApisSerializer, Staff2Serializer
+from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer, GetIsRegisteredEmailApisSerializer, Staff2Serializer, Staff3Serializer
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -1328,6 +1328,35 @@ def resetpasswordconfirm(request):
 
 
 
+class CreateAccountInformationApis(generics.ListCreateAPIView):
+    serializer_class = Staff3Serializer
+    queryset = Staff.objects.all()
+
+    def post(self, request, pk=None):
+        
+        firstname = request.data['firstname']
+        lastname = request.data['lastname']
+        username = request.data['username']
+        id = request.data['id']
+        
+        holder = Staff.objects.get(id=id)
+        #holder.userid
+        User.objects.filter(id=holder.userid).update(first_name= firstname, last_name=lastname, username = username)
+        Staff.objects.filter(id=id).update(firstname= firstname, lastname=lastname, username = username)
+
+        #userstaff2 = Staff.objects.get(id = staffuser.id)
+
+        #querysetsandcf = JoinStaffCustomfeild.objects.filter(staffid = userstaff).only('customfeildid__id','customfeildid__name','customfeildid__customfeildintvalue','customfeildid__customfeildstringvalue','customfeildid__dateofcreation','customfeildid__lastcustomfeildupdate')
+       
+   
+        serializer2 = Staff3Serializer(holder,many=False)
+
+        print("*******************")
+        print(serializer2.data)
+       
+        return Response(serializer2.data)
+    
+        
 
 
 def accountinformation(request):
