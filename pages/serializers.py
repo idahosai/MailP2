@@ -28,11 +28,11 @@ class AttachedemailemailSerializer(serializers.ModelSerializer):
 
 
 class EmailSerializer(serializers.ModelSerializer):
-    staffpk = serializers.CharField(required=False)
+    #staffpk = serializers.CharField(required=False)
     class Meta:
         model = Email
         fields = (
-            'staffpk',
+            #'staffpk',
             'id',
             'name',
             'numberofcontactssentto',
