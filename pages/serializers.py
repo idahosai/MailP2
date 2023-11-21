@@ -1,11 +1,23 @@
 
 
 from rest_framework import serializers
-from .models import Contact, Customfeild, Segment, Staff, JoinStaffCustomfeild, JoinStaffContact, Attachedsegment
+from .models import Contact, Customfeild, Segment, Staff, JoinStaffCustomfeild, JoinStaffContact, Attachedsegment, Email
 
 from django.contrib.auth.models import User
 
 
+class EmailSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
+    class Meta:
+        model = Email
+        fields = (
+            'id',
+            'name',
+            'numberofcontactssentto',
+            'dateofcreation',
+            'subjecttitle',
+            'opens'
+        )
 
 
 class GetIsRegisteredEmailApisSerializer(serializers.ModelSerializer):

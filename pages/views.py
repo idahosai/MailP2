@@ -1,4 +1,5 @@
 import datetime
+import http
 import json
 import re
 from django.conf import settings
@@ -15,11 +16,11 @@ from django.utils.encoding import force_bytes, force_text
 from . tokens import generate_token
 
 
-from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag, Contact, Customfeild, Attachedcustomfeild, Segment, Attachedsegment, JoinStaffContact, JoinStaffCustomfeild
+from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag, Contact, Customfeild, Attachedcustomfeild, Segment, Attachedsegment, JoinStaffContact, JoinStaffCustomfeild, Email, Attachedemail
 #from pages import settings
 from django.core import serializers
 
-from django.http import JsonResponse
+from django.http import FileResponse, JsonResponse
 from django.utils import timezone
 
 from django.core.files.storage import default_storage
@@ -33,7 +34,7 @@ from django.shortcuts import render
 from rest_framework import generics
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
-from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer, GetIsRegisteredEmailApisSerializer, Staff2Serializer, Staff3Serializer
+from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer, GetIsRegisteredEmailApisSerializer, Staff2Serializer, Staff3Serializer, EmailSerializer
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -181,6 +182,79 @@ def signin(request):
             return redirect('signin')
 
     return render(request, 'pages/signin.html')
+
+
+
+
+def trackopenemails(request,id):
+     if id:
+     #if 'id' in request.GET:
+        #do something with the id, which tells you that specific subscriber has opened the email.
+        if Email.objects.get(id=id).opens is None:
+            staffstuff = Email.objects.filter(id=id).update(opens=1)
+        else:
+            staffstuff = Email.objects.filter(id=id).update(opens=Email.objects.get(id=id).opens + 1)
+            
+            
+     #do something to record that an email has been opened.
+     #imagedata = open("static/img/mailppinyata.png", 'rb').read()
+     imagedata = open('static/img/mailppinyata.png', 'rb')
+     response = FileResponse(imagedata)
+
+     return response
+     #return http.HttpResponse(imagedata, mimetype="image/png")
+
+
+class CreateEmailView(generics.ListCreateAPIView):
+    serializer_class = EmailSerializer
+    queryset = Email.objects.all()
+
+    def post(self, request, pk=None):
+            #if not self.request.session.exists(self.request.session.session_key):
+            #    self.request.session.create()
+            staffid = request.data['id']
+            name = request.data['name']
+            numberofcontactssentto = request.data['numberofcontactssentto']
+            dateofcreation = request.data['dateofcreation']
+            subjecttitle = request.data['subjecttitle']
+            
+            emailuser = Email.objects.create(
+            name = name,
+            numberofcontactssentto = numberofcontactssentto,
+            dateofcreation = dateofcreation,
+            subjecttitle = subjecttitle,
+            opens= 0,
+            )
+            emailuser.save()
+            #i added this today
+            staffuser = Staff.objects.get(id = staffid)
+            #i added this today
+            attachedemailuser = Attachedemail.objects.create(
+                emailid = emailuser,
+                staffid = staffuser,
+                dateofattachement = dateofcreation
+            )
+            attachedemailuser.save()
+
+
+            #make sure that username is unique for all who log in to the system
+            #objectQuerySettag = Contact.objects.filter(id = contactuser.id)
+            holder = Email.objects.get(id=emailuser.id)
+            #holder.userid
+            
+
+            #userstaff2 = Staff.objects.get(id = staffuser.id)
+
+            #querysetsandcf = JoinStaffCustomfeild.objects.filter(staffid = userstaff).only('customfeildid__id','customfeildid__name','customfeildid__customfeildintvalue','customfeildid__customfeildstringvalue','customfeildid__dateofcreation','customfeildid__lastcustomfeildupdate')
+        
+    
+            serializer2 = EmailSerializer(holder,many=False)
+
+            print("*******************")
+            print(serializer2.data)
+        
+            return Response(serializer2.data)
+            #print(objectQuerySettag)
 
 
 #@api_view(['POST'])

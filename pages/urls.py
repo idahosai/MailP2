@@ -38,6 +38,10 @@ urlpatterns = [
 
     path('CreateSegmentIdToContactView/',views.CreateSegmentIdToContactView.as_view(),name='CreateSegmentIdToContactView/'),
 
+    path('trackopenemails/<id>', views.trackopenemails, name='trackopenemails'),
+    path('CreateEmailView/', views.CreateEmailView.as_view(), name='CreateEmailView'),
+    
+
     path('GetIsRegisteredEmailApis/',views.GetIsRegisteredEmailApis.as_view(),name='GetIsRegisteredEmailApis/'),
     path('CreateRegisterAccountApis/',views.CreateRegisterAccountApis.as_view(),name='CreateRegisterAccountApis/'),
     path('GetRecoverPasswordApis/',views.GetRecoverPasswordApis.as_view(),name='GetRecoverPasswordApis/'),
