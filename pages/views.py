@@ -212,7 +212,7 @@ class CreateEmailView(generics.ListCreateAPIView):
     def post(self, request, pk=None):
             #if not self.request.session.exists(self.request.session.session_key):
             #    self.request.session.create()
-            staffid = request.data['id']
+            staffid = request.data['staffpk']
             name = request.data['name']
             numberofcontactssentto = request.data['numberofcontactssentto']
             dateofcreation = request.data['dateofcreation']
@@ -227,7 +227,7 @@ class CreateEmailView(generics.ListCreateAPIView):
             )
             emailuser.save()
             #i added this today
-            staffuser = Staff.objects.get(id = staffid)
+            staffuser = Staff.objects.get(id = int(staffid))
             #i added this today
             attachedemailuser = Attachedemail.objects.create(
                 emailid = emailuser,
