@@ -34,7 +34,7 @@ from django.shortcuts import render
 from rest_framework import generics
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
-from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer, GetIsRegisteredEmailApisSerializer, Staff2Serializer, Staff3Serializer, EmailSerializer
+from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer, GetIsRegisteredEmailApisSerializer, Staff2Serializer, Staff3Serializer, EmailSerializer, AttachedemailemailSerializer
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -255,6 +255,46 @@ class CreateEmailView(generics.ListCreateAPIView):
         
             return Response(serializer2.data)
             #print(objectQuerySettag)
+
+
+
+class CreateEmail2View(generics.ListCreateAPIView):
+    serializer_class = AttachedemailemailSerializer
+    queryset = Attachedemail.objects.all()
+    #renderer_classes = [TemplateHTMLRenderer]
+    #template_name = 'contacts/contacts.html'
+
+    
+    #@api_view(['POST'])
+    def get(self, request, *args, **kwargs):
+        #if not self.request.session.exists(self.request.session.session_key):
+        #    self.request.session.create()
+
+        #id = request.data['id']
+        #name = request.data['name']
+        #customfeildintvalue = request.data['customfeildintvalue']
+        #customfeildstringvalue = request.data['customfeildstringvalue']
+        #dateofcreation = request.data['dateofcreation']
+        #lastcustomfeildupdate = request.data['lastcustomfeildupdate']
+
+        #g = Customfeild.objects.all()
+        #this is new from today
+        staffpk = request.GET.get('staffpk')
+        staffuser = Staff.objects.get(id=staffpk)
+        staffuser.save()
+        queryset2 = Attachedemail.objects.filter(staffid = staffuser)
+        serializer2 = AttachedemailemailSerializer(queryset2,many=True)
+
+        #queryset = Contact.objects.all()
+        #serializer = CreateContact2Serializer(queryset,many=True)
+        
+        
+        #print(serializer.data)
+        #print(list(dataB))
+        #print(dataB)
+        #json_object = json.loads(dataB)
+        return Response(serializer2.data)
+
 
 
 #@api_view(['POST'])

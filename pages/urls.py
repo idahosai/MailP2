@@ -40,7 +40,7 @@ urlpatterns = [
 
     path('trackopenemails/<id>', views.trackopenemails, name='trackopenemails'),
     path('CreateEmailView/', views.CreateEmailView.as_view(), name='CreateEmailView'),
-    
+    path('CreateEmail2View/', views.CreateEmail2View.as_view(), name='CreateEmail2View'),
 
     path('GetIsRegisteredEmailApis/',views.GetIsRegisteredEmailApis.as_view(),name='GetIsRegisteredEmailApis/'),
     path('CreateRegisterAccountApis/',views.CreateRegisterAccountApis.as_view(),name='CreateRegisterAccountApis/'),

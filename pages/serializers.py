@@ -1,9 +1,30 @@
 
 
 from rest_framework import serializers
-from .models import Contact, Customfeild, Segment, Staff, JoinStaffCustomfeild, JoinStaffContact, Attachedsegment, Email
+from .models import Contact, Customfeild, Segment, Staff, JoinStaffCustomfeild, JoinStaffContact, Attachedsegment, Email, Attachedemail
 
 from django.contrib.auth.models import User
+
+
+class AttachedemailemailSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='emailid.id', read_only=True)
+    name = serializers.CharField(source='emailid.name', read_only=True)
+    numberofcontactssentto = serializers.IntegerField(source='emailid.numberofcontactssentto', read_only=True)
+    dateofcreation = serializers.DateTimeField(source='emailid.dateofcreation', read_only=True)
+    subjecttitle = serializers.CharField(source='emailid.subjecttitle', read_only=True)
+    opens = serializers.IntegerField(source='emailid.opens', read_only=True)
+    
+    
+    class Meta:
+        model = Attachedemail
+        fields = (
+        'id',
+        'name',
+        'numberofcontactssentto',
+        'dateofcreation',
+        'subjecttitle',
+        'opens'
+        )
 
 
 class EmailSerializer(serializers.ModelSerializer):
