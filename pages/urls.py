@@ -44,6 +44,13 @@ urlpatterns = [
 
     path('GetIsRegisteredEmailApis/',views.GetIsRegisteredEmailApis.as_view(),name='GetIsRegisteredEmailApis/'),
     path('CreateRegisterAccountApis/',views.CreateRegisterAccountApis.as_view(),name='CreateRegisterAccountApis/'),
+
+    path('CreateRegisterEmailSubscriberAccountApis/',views.CreateRegisterEmailSubscriberAccountApis.as_view(),name='CreateRegisterEmailSubscriberAccountApis/'),
+    path('GetIsRegisteredEmailForSubscriberApis/',views.GetIsRegisteredEmailForSubscriberApis.as_view(),name='GetIsRegisteredEmailForSubscriberApis/'),
+
+    path('checksigninsubscriberapi/',views.checksigninsubscriberapi.as_view(), name="checksigninsubscriberapi/"),
+    
+
     path('GetRecoverPasswordApis/',views.GetRecoverPasswordApis.as_view(),name='GetRecoverPasswordApis/'),
     path('CreateAccountInformationApis/',views.CreateAccountInformationApis.as_view(),name='CreateAccountInformationApis/'),
 

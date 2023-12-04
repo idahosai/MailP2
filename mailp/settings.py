@@ -29,12 +29,24 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 
+#the previous
+#EMAIL_HOST = 'smtp.mailtrap.io'
+#EMAIL_HOST_USER = 'ae30c81fcfa156'
+#EMAIL_HOST_PASSWORD = 'db1462228c8403'
+#EMAIL_PORT = '2525'
 
-EMAIL_HOST = 'smtp.mailtrap.io'
-EMAIL_HOST_USER = 'ae30c81fcfa156'
-EMAIL_HOST_PASSWORD = 'db1462228c8403'
-EMAIL_PORT = '2525'
 
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'igbinosaidahosai@gmail.com'
+EMAIL_HOST_PASSWORD = 'khbvitqhipuvtqyp'
+EMAIL_PORT = 587
+
+#String mailFrom = "igbinosaidahosai@gmail.com";
+#                String password = "khbvitqhipuvtqyp";
+#                String host = "smtp.gmail.com";
+#                String port = "587";
 
 
 # Quick-start development settings - unsuitable for production

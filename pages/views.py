@@ -34,7 +34,7 @@ from django.shortcuts import render
 from rest_framework import generics
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
-from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer, GetIsRegisteredEmailApisSerializer, Staff2Serializer, Staff3Serializer, EmailSerializer, AttachedemailemailSerializer
+from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer, GetIsRegisteredEmailApisSerializer, Staff2Serializer, Staff3Serializer, EmailSerializer, AttachedemailemailSerializer, User2Serializer
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -356,6 +356,73 @@ def checksigninapi(request):
     return JsonResponse(dataB,safe=False)
     #return render(request, 'pages/signin.html')
 
+
+
+
+
+
+class checksigninsubscriberapi(generics.ListCreateAPIView):
+    serializer_class = User2Serializer
+    queryset = User.objects.all()
+
+    def get(self, request, *args, **kwargs):
+
+        if request.method == 'GET':
+            #username = request.POST['username']
+            #password = request.POST['password']
+
+            username = request.GET['username']
+            password = request.GET['password']
+            #username = "iggy"
+            #password = "Iggyboy4"
+
+            user = authenticate(request, username=username, password=password) 
+            #print(user.first_name)
+            #print("******************************************************")
+            if user is not None:
+                #login(request, user)
+                #fname = user.first_name
+                #messages.success(request, "Logged In Sucessfully!!")
+                #render(request, 'pages/index.html', {'fname': "yoyo"})
+                #return render(request, 'pages/index.html', {'fname': fname})
+            
+                print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+                #objectQuerySettag = Attachedtag.objects.filter(tagid__type = "Purchase").select_related("tagid")
+
+                #make sure that username is unique for all who log in to the system
+
+
+                userhere = User.objects.filter(username = username)
+
+        
+                serializer2 = User2Serializer(userhere,many=True)
+
+                print("*******************")
+                print(serializer2.data)
+       
+                return Response(serializer2.data)
+
+
+            else:
+                #messages.error(request, "Bad Credentials!") 
+                #return redirect('signin')
+                
+                dataB=[]
+                #return JsonResponse(response)
+                return Response(dataB)
+
+        
+        dataB=[]
+        #return JsonResponse(response)
+        return Response(dataB)
+        #return render(request, 'pages/signin.html')
+
+
+
+
+
+
+
 #class CreateContactView(APIView):
 #class CreateContactView(viewsets.ModelViewSet):
 #@csrf_exempt
@@ -469,6 +536,8 @@ class GetIsRegisteredEmailApis(generics.ListCreateAPIView):
         emailaddress = request.GET.get('emailaddress')
 
         #objects.get doesn't return empty result but filter does
+        #isn't this supposed to be staff?
+        #***************************************************************************************************************************
         usercontact = Contact.objects.filter(emailaddress = emailaddress)
 
         if usercontact:
@@ -485,7 +554,41 @@ class GetIsRegisteredEmailApis(generics.ListCreateAPIView):
             dataB=[]
             return Response(dataB)
            
+
+
+
+
+
+class GetIsRegisteredEmailForSubscriberApis(generics.ListCreateAPIView):
+    serializer_class = GetIsRegisteredEmailApisSerializer
+    queryset = Contact.objects.all()
+
+    def get(self, request, *args, **kwargs):
         
+        emailaddress = request.GET.get('emailaddress')
+
+        #objects.get doesn't return empty result but filter does
+        #isn't this supposed to be staff?
+        #***************************************************************************************************************************
+        usercontact = Contact.objects.filter(emailaddress = emailaddress)
+
+        if usercontact:
+            serializer2 = GetIsRegisteredEmailApisSerializer(usercontact,many=True)
+
+            print("*******************")
+            print(serializer2.data)
+       
+            return Response(serializer2.data)
+        
+        else:
+            response = {
+            }
+            dataB=[]
+            return Response(dataB)
+           
+
+
+  
         
 
 
@@ -558,7 +661,44 @@ class CreateRegisterAccountApis(generics.ListCreateAPIView):
         return Response(serializer2.data)
     
         
-        
+
+
+class CreateRegisterEmailSubscriberAccountApis(generics.ListCreateAPIView):
+    serializer_class = User2Serializer
+    queryset = User.objects.all()
+
+    def post(self, request, pk=None):
+        username = request.data['username']
+        firstname = request.data['firstname']
+        lastname = request.data['lastname']
+        emailaddress = request.data['emailaddress']
+        password = request.data['password']
+     
+
+        myuser = User.objects.create_user(username, emailaddress, password)
+        myuser.first_name = firstname
+        myuser.last_name = lastname
+
+        #this is whats stopping my loging in from working
+        #for now we will leave it uncommented
+        myuser.is_active = True
+
+        myuser.is_staff = False
+        myuser.save()
+
+        userstaff2 = User.objects.get(email = emailaddress)
+        #querysetsandcf = JoinStaffCustomfeild.objects.filter(staffid = userstaff).only('customfeildid__id','customfeildid__name','customfeildid__customfeildintvalue','customfeildid__customfeildstringvalue','customfeildid__dateofcreation','customfeildid__lastcustomfeildupdate')
+        serializer2 = User2Serializer(userstaff2,many=False)
+
+        print("*******************")
+        print(serializer2.data)
+       
+        return Response(serializer2.data)
+    
+       
+
+
+
 
 class GetRecoverPasswordApis(generics.ListCreateAPIView):
     serializer_class = Staff2Serializer

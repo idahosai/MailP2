@@ -6,6 +6,18 @@ from .models import Contact, Customfeild, Segment, Staff, JoinStaffCustomfeild, 
 from django.contrib.auth.models import User
 
 
+class User2Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'username', 
+            'first_name',
+            'last_name',
+            'email'
+            )
+
+
 class AttachedemailemailSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='emailid.id', read_only=True)
     name = serializers.CharField(source='emailid.name', read_only=True)
