@@ -1,10 +1,110 @@
 from django.db import models
 
+from django.contrib.auth.models import User
 #
 
 
 
 #
+
+#this wont work if i try to get the json of it using the other non serializer class method
+class InboxManager(models.Manager):
+    def get_by_natural_key(self, id, lastmessage,lastsentuserid):
+        return self.get(id = id, lastmessage=lastmessage, lastsentuserid=lastsentuserid)
+    #def get_by_natural_key(self, name, dateofcreation):
+    #    return self.get(name=name, dateofcreation=dateofcreation)
+class Inbox(models.Model):
+    #this alone works to get it to auto increment, dont add other parameter like default or it will stop it from working
+    id = models.AutoField(primary_key=True)
+    lastmessage = models.CharField(max_length=255,default=' ')
+    lastsentuserid = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    
+
+        #metadata is “anything that’s not a field
+    class Meta:                   #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate 
+        #this is what is actually group in the serialized object's feild column for the specific feild foreighn key attribute
+        #Sets of field names that, taken together, must be unique:
+        #unique_together can be a single list when dealing with a single set of fields:
+        unique_together = ['id', 'lastmessage','lastsentuserid']
+    def __str__(self):
+        return str(self.id)
+        #return self.name
+    #This method should always return a natural key tuple 
+    #Then, when you call serializers.serialize(), you provide use_natural_foreign_keys=True or use_natural_primary_keys=True arguments
+    def natural_key(self):              #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate
+        #made this dictionary return whitch will add to the previous dictionary
+        return {'id':self.id, 'lastmessage':self.lastmessage, 'lastsentuserid': self.lastsentuserid}
+        #return {'name': self.name, 'dateofcreation': self.dateofcreation}
+    
+
+
+
+#this wont work if i try to get the json of it using the other non serializer class method
+class InboxparticipantsManager(models.Manager):
+    def get_by_natural_key(self, id, inboxid, userid):
+        return self.get(id = id, inboxid=inboxid, userid=userid)
+    #def get_by_natural_key(self, name, dateofcreation):
+    #    return self.get(name=name, dateofcreation=dateofcreation)
+class Inboxparticipants(models.Model):
+    #this alone works to get it to auto increment, dont add other parameter like default or it will stop it from working
+    id = models.AutoField(primary_key=True)
+    inboxid = models.ForeignKey(Inbox, on_delete=models.CASCADE, null=True)
+    userid = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+
+        #metadata is “anything that’s not a field
+    class Meta:                   #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate 
+        #this is what is actually group in the serialized object's feild column for the specific feild foreighn key attribute
+        #Sets of field names that, taken together, must be unique:
+        #unique_together can be a single list when dealing with a single set of fields:
+        unique_together = ['id', 'inboxid', 'userid']
+    def __str__(self):
+        return str(self.id)
+        #return self.name
+    #This method should always return a natural key tuple 
+    #Then, when you call serializers.serialize(), you provide use_natural_foreign_keys=True or use_natural_primary_keys=True arguments
+    def natural_key(self):              #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate
+        #made this dictionary return whitch will add to the previous dictionary
+        return {'id':self.id, 'inboxid': self.inboxid, 'userid':self.userid}
+        #return {'name': self.name, 'dateofcreation': self.dateofcreation}
+    natural_key.dependencies = ['pages.Inbox']
+
+
+
+
+#this wont work if i try to get the json of it using the other non serializer class method
+class MessageManager(models.Manager):
+    def get_by_natural_key(self, id, inboxid, userid,message,dateofcreation):
+        return self.get(id = id, inboxid=inboxid, userid=userid, message=message, dateofcreation=dateofcreation)
+    #def get_by_natural_key(self, name, dateofcreation):
+    #    return self.get(name=name, dateofcreation=dateofcreation)
+class Message(models.Model):
+    #this alone works to get it to auto increment, dont add other parameter like default or it will stop it from working
+    id = models.AutoField(primary_key=True)
+    inboxid = models.ForeignKey(Inbox, on_delete=models.CASCADE, null=True)
+    userid = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    message = models.CharField(max_length=255,default=' ')
+    dateofcreation = models.DateTimeField(null=True, blank=False)
+    
+
+        #metadata is “anything that’s not a field
+    class Meta:                   #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate 
+        #this is what is actually group in the serialized object's feild column for the specific feild foreighn key attribute
+        #Sets of field names that, taken together, must be unique:
+        #unique_together can be a single list when dealing with a single set of fields:
+        unique_together = ['id', 'inboxid', 'userid','message','dateofcreation']
+    def __str__(self):
+        return str(self.id)
+        #return self.name
+    #This method should always return a natural key tuple 
+    #Then, when you call serializers.serialize(), you provide use_natural_foreign_keys=True or use_natural_primary_keys=True arguments
+    def natural_key(self):              #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate
+        #made this dictionary return whitch will add to the previous dictionary
+        return {'id':self.id, 'inboxid': self.inboxid, 'userid':self.userid, 'message': self.message, 'dateofcreation':self.dateofcreation}
+        #return {'name': self.name, 'dateofcreation': self.dateofcreation}
+    natural_key.dependencies = ['pages.Inbox']
+
+
+
 
 class StaffManager(models.Manager):
     def get_by_natural_key(self, id, userid, username, firstname, lastname, emailaddress, industry):

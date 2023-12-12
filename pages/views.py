@@ -297,6 +297,20 @@ class CreateEmail2View(generics.ListCreateAPIView):
 
 
 
+class SearchedUsersApis(generics.ListCreateAPIView):
+    serializer_class = User2Serializer
+    queryset = User.objects.all()
+    #renderer_classes = [TemplateHTMLRenderer]
+    #template_name = 'contacts/contacts.html'
+    #@api_view(['POST'])
+    def get(self, request, *args, **kwargs):
+        search = request.GET.get('search')
+        
+        queryset2 = User.objects.filter(first_name__startswith = search)
+        serializer2 = User2Serializer(queryset2,many=True)
+
+        return Response(serializer2.data)
+
 #@api_view(['POST'])
 def checksigninapi(request):
     if request.method == 'GET':

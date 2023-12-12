@@ -54,6 +54,9 @@ urlpatterns = [
     path('GetRecoverPasswordApis/',views.GetRecoverPasswordApis.as_view(),name='GetRecoverPasswordApis/'),
     path('CreateAccountInformationApis/',views.CreateAccountInformationApis.as_view(),name='CreateAccountInformationApis/'),
 
+    path('SearchedUsersApis/',views.SearchedUsersApis.as_view(),name='SearchedUsersApis/'),
+    
+
     #path('post/',views.post,name="post/")
     path('playtemplate', views.playtemplate, name="playtemplate")
     
