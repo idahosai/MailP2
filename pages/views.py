@@ -407,7 +407,7 @@ class MessageAllApis(generics.ListCreateAPIView):
         inboxid = request.GET.get('inboxid')
         holdinbox = Inbox.objects.get(id = inboxid)
 
-        a = Message.objects.filter(inboxid = holdinbox.id)
+        a = Message.objects.filter(inboxid = holdinbox.id).order_by("dateofcreation")
         serializer3 = MessageSerializer(a,many=True)
 
         return Response(serializer3.data)
