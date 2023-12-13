@@ -16,7 +16,7 @@ from django.utils.encoding import force_bytes, force_text
 from . tokens import generate_token
 
 
-from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag, Contact, Customfeild, Attachedcustomfeild, Segment, Attachedsegment, JoinStaffContact, JoinStaffCustomfeild, Email, Attachedemail
+from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag, Contact, Customfeild, Attachedcustomfeild, Segment, Attachedsegment, JoinStaffContact, JoinStaffCustomfeild, Email, Attachedemail, Inbox, Inboxparticipants
 #from pages import settings
 from django.core import serializers
 
@@ -34,7 +34,7 @@ from django.shortcuts import render
 from rest_framework import generics
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
-from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer, GetIsRegisteredEmailApisSerializer, Staff2Serializer, Staff3Serializer, EmailSerializer, AttachedemailemailSerializer, User2Serializer
+from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer, GetIsRegisteredEmailApisSerializer, Staff2Serializer, Staff3Serializer, EmailSerializer, AttachedemailemailSerializer, User2Serializer, Inboxparticipants2InboxSerializer
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -310,6 +310,40 @@ class SearchedUsersApis(generics.ListCreateAPIView):
         serializer2 = User2Serializer(queryset2,many=True)
 
         return Response(serializer2.data)
+
+
+
+class InboxApis(generics.ListCreateAPIView):
+    serializer_class = Inboxparticipants2InboxSerializer
+    queryset = Inbox.objects.all()
+    #renderer_classes = [TemplateHTMLRenderer]
+    #template_name = 'contacts/contacts.html'
+    #@api_view(['POST'])
+    def get(self, request, *args, **kwargs):
+        userid = request.GET.get('userid')
+        otheruserid = request.GET.get('otheruserid')
+        
+        if Inboxparticipants.objects.filter(userid = userid, inboxid__userid = otheruserid).exists:
+            queryset1 = Inboxparticipants.objects.filter(userid = userid, inboxid__userid = otheruserid)
+            serializer1 = Inboxparticipants2InboxSerializer(queryset1,many=True)
+            return Response(serializer1)
+        
+        if Inboxparticipants.objects.filter(userid = otheruserid, inboxid__userid = userid).exists:
+            queryset2 = Inboxparticipants.objects.filter(userid = userid, inboxid__userid = otheruserid)
+            serializer2 = Inboxparticipants2InboxSerializer(queryset2,many=True)
+            return Response(serializer2)
+        
+        inboxuser = Inbox.objects.create(userid = otheruserid)
+        inboxuser.save()
+
+        Inboxparticipantsuser = Inboxparticipants.objects.create(inboxid = inboxuser, userid = userid)
+        Inboxparticipantsuser.save()
+
+        serializer3 = Inboxparticipants2InboxSerializer(Inboxparticipantsuser,many=True)
+
+        return Response(serializer3.data)
+
+
 
 #@api_view(['POST'])
 def checksigninapi(request):

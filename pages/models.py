@@ -9,15 +9,15 @@ from django.contrib.auth.models import User
 
 #this wont work if i try to get the json of it using the other non serializer class method
 class InboxManager(models.Manager):
-    def get_by_natural_key(self, id, lastmessage,lastsentuserid):
-        return self.get(id = id, lastmessage=lastmessage, lastsentuserid=lastsentuserid)
+    def get_by_natural_key(self, id, lastmessage,userid):
+        return self.get(id = id, lastmessage=lastmessage, userid=userid)
     #def get_by_natural_key(self, name, dateofcreation):
     #    return self.get(name=name, dateofcreation=dateofcreation)
 class Inbox(models.Model):
     #this alone works to get it to auto increment, dont add other parameter like default or it will stop it from working
     id = models.AutoField(primary_key=True)
     lastmessage = models.CharField(max_length=255,default=' ')
-    lastsentuserid = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    userid = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     
 
         #metadata is “anything that’s not a field
@@ -25,7 +25,7 @@ class Inbox(models.Model):
         #this is what is actually group in the serialized object's feild column for the specific feild foreighn key attribute
         #Sets of field names that, taken together, must be unique:
         #unique_together can be a single list when dealing with a single set of fields:
-        unique_together = ['id', 'lastmessage','lastsentuserid']
+        unique_together = ['id', 'lastmessage','userid']
     def __str__(self):
         return str(self.id)
         #return self.name
@@ -33,7 +33,7 @@ class Inbox(models.Model):
     #Then, when you call serializers.serialize(), you provide use_natural_foreign_keys=True or use_natural_primary_keys=True arguments
     def natural_key(self):              #removed the neccessary feild from here  if u get the error "TypeError: Object of type SchoolProgram is not JSON serializable". remove it in other places below too cus thats more immediate
         #made this dictionary return whitch will add to the previous dictionary
-        return {'id':self.id, 'lastmessage':self.lastmessage, 'lastsentuserid': self.lastsentuserid}
+        return {'id':self.id, 'lastmessage':self.lastmessage, 'userid': self.userid}
         #return {'name': self.name, 'dateofcreation': self.dateofcreation}
     
 

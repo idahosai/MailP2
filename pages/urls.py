@@ -55,6 +55,9 @@ urlpatterns = [
     path('CreateAccountInformationApis/',views.CreateAccountInformationApis.as_view(),name='CreateAccountInformationApis/'),
 
     path('SearchedUsersApis/',views.SearchedUsersApis.as_view(),name='SearchedUsersApis/'),
+
+    path('InboxApis/',views.InboxApis.as_view(),name='InboxApis/'),
+    
     
 
     #path('post/',views.post,name="post/")

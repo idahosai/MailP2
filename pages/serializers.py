@@ -1,9 +1,24 @@
 
 
 from rest_framework import serializers
-from .models import Contact, Customfeild, Segment, Staff, JoinStaffCustomfeild, JoinStaffContact, Attachedsegment, Email, Attachedemail
+from .models import Contact, Customfeild, Segment, Staff, JoinStaffCustomfeild, JoinStaffContact, Attachedsegment, Email, Attachedemail, Inboxparticipants, Inbox
 
 from django.contrib.auth.models import User
+
+
+
+class Inboxparticipants2InboxSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='userid.id', read_only=True)
+    lastmessage = serializers.CharField(source='userid.lastmessage', read_only=True)
+    userid = serializers.IntegerField(source='userid.userid', read_only=True)
+    
+    class Meta:
+        model = Inboxparticipants
+        fields = (
+        'id',
+        'lastmessage',
+        'userid',
+        )
 
 
 class User2Serializer(serializers.ModelSerializer):
