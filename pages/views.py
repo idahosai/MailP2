@@ -315,32 +315,54 @@ class SearchedUsersApis(generics.ListCreateAPIView):
 
 class InboxApis(generics.ListCreateAPIView):
     serializer_class = Inboxparticipants2InboxSerializer
-    queryset = Inbox.objects.all()
+    queryset = Inboxparticipants.objects.all()
     #renderer_classes = [TemplateHTMLRenderer]
     #template_name = 'contacts/contacts.html'
     #@api_view(['POST'])
     def get(self, request, *args, **kwargs):
         userid = request.GET.get('userid')
         otheruserid = request.GET.get('otheruserid')
+
+
         
-        if Inboxparticipants.objects.filter(userid = userid, inboxid__userid = otheruserid).exists:
+
+        b= Inboxparticipants.objects.filter(userid = userid, inboxid__userid = otheruserid)
+        c= Inboxparticipants.objects.filter(userid = otheruserid, inboxid__userid = userid)
+
+        print("111111111111111111111111111111")
+        if b.count() > 0:
+            #holduser = User.objects.get(id = userid)
+            #holdotheruser = User.objects.get(id = otheruserid)
             queryset1 = Inboxparticipants.objects.filter(userid = userid, inboxid__userid = otheruserid)
             serializer1 = Inboxparticipants2InboxSerializer(queryset1,many=True)
-            return Response(serializer1)
+            print("22222222222222222222222222222222")
+            return Response(serializer1.data)
         
-        if Inboxparticipants.objects.filter(userid = otheruserid, inboxid__userid = userid).exists:
-            queryset2 = Inboxparticipants.objects.filter(userid = userid, inboxid__userid = otheruserid)
+        if c.count() > 0:
+            #holduser = User.objects.get(id = userid)
+            #holdotheruser = User.objects.get(id = otheruserid)
+            queryset2 = Inboxparticipants.objects.filter(userid = otheruserid, inboxid__userid = userid)
             serializer2 = Inboxparticipants2InboxSerializer(queryset2,many=True)
-            return Response(serializer2)
+            print("333333333333333333333333333333333333")
+            return Response(serializer2.data)
         
-        inboxuser = Inbox.objects.create(userid = otheruserid)
+        print("44444444444444444444444444444444444444")
+        holdotheruser = User.objects.get(id = otheruserid)
+
+        inboxuser = Inbox.objects.create(userid = holdotheruser)
         inboxuser.save()
 
-        Inboxparticipantsuser = Inboxparticipants.objects.create(inboxid = inboxuser, userid = userid)
+
+        holduser = User.objects.get(id = userid)
+
+
+        Inboxparticipantsuser = Inboxparticipants.objects.create(inboxid = inboxuser, userid = holduser)
         Inboxparticipantsuser.save()
 
-        serializer3 = Inboxparticipants2InboxSerializer(Inboxparticipantsuser,many=True)
+        a = Inboxparticipants.objects.filter(id = Inboxparticipantsuser.id)
+        serializer3 = Inboxparticipants2InboxSerializer(a,many=True)
 
+        print("555555555555555555555555555555555555555555555")
         return Response(serializer3.data)
 
 

@@ -8,9 +8,10 @@ from django.contrib.auth.models import User
 
 
 class Inboxparticipants2InboxSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source='userid.id', read_only=True)
-    lastmessage = serializers.CharField(source='userid.lastmessage', read_only=True)
-    userid = serializers.IntegerField(source='userid.userid', read_only=True)
+    id = serializers.IntegerField(source='inboxid.id', read_only=True)
+    lastmessage = serializers.CharField(source='inboxid.lastmessage', read_only=True)
+    #i can't stop at an object and think thats the id
+    userid = serializers.IntegerField(source='inboxid.userid.id', read_only=True)
     
     class Meta:
         model = Inboxparticipants
