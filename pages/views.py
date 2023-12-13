@@ -16,7 +16,7 @@ from django.utils.encoding import force_bytes, force_text
 from . tokens import generate_token
 
 
-from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag, Contact, Customfeild, Attachedcustomfeild, Segment, Attachedsegment, JoinStaffContact, JoinStaffCustomfeild, Email, Attachedemail, Inbox, Inboxparticipants
+from pages.models import AttachedAll, AttachedForm, Attachedgroup, Attachedtag, Bulkimport, Form, Group, Staff, Tag, Contact, Customfeild, Attachedcustomfeild, Segment, Attachedsegment, JoinStaffContact, JoinStaffCustomfeild, Email, Attachedemail, Inbox, Inboxparticipants, Message
 #from pages import settings
 from django.core import serializers
 
@@ -34,7 +34,7 @@ from django.shortcuts import render
 from rest_framework import generics
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
-from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer, GetIsRegisteredEmailApisSerializer, Staff2Serializer, Staff3Serializer, EmailSerializer, AttachedemailemailSerializer, User2Serializer, Inboxparticipants2InboxSerializer
+from .serializers import CreateContactSerializer, CreateCustomfeildSerializer, CreateCustomfeild2Serializer, CreateContact2Serializer, CreateSegmentSerializer, CreateContactEmailSerializer, JoinStaffCustomfeildSerializer, JoinStaffContactSerializer, ShowSegmentSerializer, AttachedsegmentSerializer, GetIsRegisteredEmailApisSerializer, Staff2Serializer, Staff3Serializer, EmailSerializer, AttachedemailemailSerializer, User2Serializer, Inboxparticipants2InboxSerializer, MessageSerializer
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -364,6 +364,55 @@ class InboxApis(generics.ListCreateAPIView):
 
         print("555555555555555555555555555555555555555555555")
         return Response(serializer3.data)
+
+
+
+
+
+class MessageApis(generics.ListCreateAPIView):
+    serializer_class = MessageSerializer
+    queryset = Message.objects.all()
+    #renderer_classes = [TemplateHTMLRenderer]
+    #template_name = 'contacts/contacts.html'
+
+    
+    #@api_view(['POST'])
+    def post(self, request, pk=None):
+        inboxid = request.data['inboxid']
+        userid = request.data['userid']
+        message = request.data['message']
+        dateofcreation = request.data['dateofcreation']
+
+        holdinbox = Inbox.objects.get(id = inboxid)
+        holduser = User.objects.get(id = userid)
+
+
+        messageuser = Message.objects.create(inboxid = holdinbox, userid = holduser, message = message, dateofcreation = dateofcreation)
+        messageuser.save()
+
+        a = Message.objects.filter(id = messageuser.id)
+        serializer3 = MessageSerializer(a,many=True)
+
+        return Response(serializer3.data)
+
+
+
+class MessageAllApis(generics.ListCreateAPIView):
+    serializer_class = MessageSerializer
+    queryset = Message.objects.all()
+    #renderer_classes = [TemplateHTMLRenderer]
+    #template_name = 'contacts/contacts.html'
+    #@api_view(['POST'])
+    def get(self, request, *args, **kwargs):
+        inboxid = request.GET.get('inboxid')
+        holdinbox = Inbox.objects.get(id = inboxid)
+
+        a = Message.objects.filter(inboxid = holdinbox.id)
+        serializer3 = MessageSerializer(a,many=True)
+
+        return Response(serializer3.data)
+
+
 
 
 

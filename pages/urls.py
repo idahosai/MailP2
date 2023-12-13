@@ -58,7 +58,8 @@ urlpatterns = [
 
     path('InboxApis/',views.InboxApis.as_view(),name='InboxApis/'),
     
-    
+    path('MessageApis/',views.MessageApis.as_view(),name='MessageApis/'),
+    path('MessageAllApis/',views.MessageAllApis.as_view(), name='MessageAllApis/'),
 
     #path('post/',views.post,name="post/")
     path('playtemplate', views.playtemplate, name="playtemplate")

@@ -1,10 +1,21 @@
 
 
 from rest_framework import serializers
-from .models import Contact, Customfeild, Segment, Staff, JoinStaffCustomfeild, JoinStaffContact, Attachedsegment, Email, Attachedemail, Inboxparticipants, Inbox
+from .models import Contact, Customfeild, Segment, Staff, JoinStaffCustomfeild, JoinStaffContact, Attachedsegment, Email, Attachedemail, Inboxparticipants, Inbox, Message
 
 from django.contrib.auth.models import User
 
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = (
+            'id',
+            'inboxid', 
+            'userid',
+            'message',
+            'dateofcreation'
+            )
 
 
 class Inboxparticipants2InboxSerializer(serializers.ModelSerializer):
@@ -18,7 +29,7 @@ class Inboxparticipants2InboxSerializer(serializers.ModelSerializer):
         fields = (
         'id',
         'lastmessage',
-        'userid',
+        'userid'
         )
 
 
