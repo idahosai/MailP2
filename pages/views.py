@@ -648,7 +648,8 @@ class CreateContactView(generics.ListCreateAPIView):
 
 class GetIsRegisteredEmailApis(generics.ListCreateAPIView):
     serializer_class = GetIsRegisteredEmailApisSerializer
-    queryset = Contact.objects.all()
+    queryset = User.objects.all()
+    
 
     def get(self, request, *args, **kwargs):
         
@@ -658,6 +659,8 @@ class GetIsRegisteredEmailApis(generics.ListCreateAPIView):
         #isn't this supposed to be staff?
         #***************************************************************************************************************************
         usercontact = User.objects.filter(email = emailaddress)
+
+        print("*******************here i am ********************************")
 
         if usercontact:
             serializer2 = GetIsRegisteredEmailApisSerializer(usercontact,many=True)

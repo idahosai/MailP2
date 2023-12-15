@@ -84,9 +84,9 @@ class EmailSerializer(serializers.ModelSerializer):
 class GetIsRegisteredEmailApisSerializer(serializers.ModelSerializer):
     #put in a "," if it's just 1 feild to allow it
     class Meta:
-        model = Contact
+        model = User
         fields = (
-            'emailaddress',
+            'email',
         )
 
 
