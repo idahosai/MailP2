@@ -657,7 +657,7 @@ class GetIsRegisteredEmailApis(generics.ListCreateAPIView):
         #objects.get doesn't return empty result but filter does
         #isn't this supposed to be staff?
         #***************************************************************************************************************************
-        usercontact = Contact.objects.filter(emailaddress = emailaddress)
+        usercontact = User.objects.filter(email = emailaddress)
 
         if usercontact:
             serializer2 = GetIsRegisteredEmailApisSerializer(usercontact,many=True)
