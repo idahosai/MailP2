@@ -136,6 +136,7 @@ def registeraccount(request):
         send_mail(subject, message, from_email, to_list, fail_silently=True)
         
         
+        
         # Email Address Confirmation Email
         current_site = get_current_site(request)
         email_subject = "Confirm your Email @ Mail Pinyata Login!!"
