@@ -197,6 +197,7 @@ def trackopenemails(request,id):
             staffstuff = Email.objects.filter(id=id).update(opens=Email.objects.get(id=id).opens + 1)
             
             
+            
      #do something to record that an email has been opened.
      #imagedata = open("static/img/mailppinyata.png", 'rb').read()
      imagedata = open('static/img/mailppinyata.png', 'rb')
